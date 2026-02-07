@@ -233,6 +233,29 @@ Le digital est mon terrain de jeu, la solution mon objectif
                     </div>
                 </article>
 
+                 <article class="projets__card">
+                    <a href="https://aiae-frontend.netlify.app/" target="_blank" class="projets__image">
+                        <img src="assets/images/aiae.png" alt="image" class="projets__img">
+                    </a>
+                    <div class="projets__data">
+                        <h3 class="projets__name">AIAE</h3>
+                        <p class="projets__description">Plateforme dédiée a une entreprise BTP qui est AIAE pour toutes sorte de simulations et de devis.
+                        </p>
+                        <div class="projets__skills">
+                            <img src="assets/images/laravel.png" alt="image" class="projets__skill">
+                            <img src="assets/images/skills-tailwin-css.webp" alt="image" class="projets__skill">
+                            <img src="assets/images/skills-html.webp" alt="image" class="projets__skill">
+                            <img src="assets/images/skills-javascript.webp" alt="image" class="projets__skill">
+                        </div>
+
+                        <a href="https://aiae-frontend.netlify.app/" target="_blank" class="projets__button">
+                            <i class="ri-links-line"></i>
+                            <span>Voir le site</span>
+                        </a>
+
+                    </div>
+                </article>
+
                 <article class="projets__card">
                     <a href="#" target="_blank" class="projets__image">
                         <img src="assets/images/lounge.png" alt="image" class="projets__img">
@@ -607,16 +630,20 @@ Le digital est mon terrain de jeu, la solution mon objectif
 
             <div class="contact__container container grid">
 
-                <form action="" class="contact__form grid" id="contact-form">
-                    <div class="contact__group grid">
-                        <input type="text" name="user_name" placeholder="Nom " required class="contact__input">
-                        <input type="email" name="user_email" placeholder="Email" required class="contact__input">
-                    </div>
-                    <textarea name="user_message" id="" placeholder="Message" class="contact__input contact__area"></textarea>
-                    <button type="submit" class="button contact__button">Envoyez</button>
-
-                    <p class="contact__message" id="contact__message"></p>
-                </form>
+               <form action="https://formspree.io/f/xaqdylnr" method="POST" class="contact__form grid">
+    <div class="contact__group grid">
+        <input type="text" name="name" placeholder="Nom" required class="contact__input">
+        <input type="email" name="email" placeholder="Email" required class="contact__input">
+    </div>
+    <textarea name="message" placeholder="Message" required class="contact__input contact__area"></textarea>
+    
+    <!-- Champ honeypot anti-spam (optionnel mais recommandé) -->
+    <input type="text" name="_gotcha" style="display:none">
+    
+    <button type="submit" class="button contact__button">Envoyer</button>
+    
+    <p class="contact__message" id="contact__message"></p>
+</form>
             </div>
         </section>
 
