@@ -85,3 +85,35 @@ sr.reveal('.info', {origin: 'left', delay:800})
 sr.reveal('.skills', {origin: 'left', delay:1000})
 sr.reveal('.about', {origin: 'right', delay:1200})
 sr.reveal('.projets__card,  .services__card, .experience__card , .abilitie__card', {interval:100})
+
+
+/* ================= THEME SOMBRE / CLAIR ================= */
+const themeButton = document.getElementById('theme-toggle')
+const themeIcon = document.getElementById('theme-icon')
+const lightTheme = 'light-theme'
+const iconTheme = 'ri-sun-line'
+
+// thème sauvegardé
+const selectedTheme = localStorage.getItem('selected-theme')
+const selectedIcon = localStorage.getItem('selected-icon')
+
+// appliquer le thème sauvegardé
+if (selectedTheme) {
+  document.body.classList[selectedTheme === 'light' ? 'add' : 'remove'](lightTheme)
+  themeIcon.className = selectedIcon
+}
+
+themeButton.addEventListener('click', () => {
+  document.body.classList.toggle(lightTheme)
+  themeIcon.classList.toggle(iconTheme)
+  themeIcon.classList.toggle('ri-moon-line')
+
+  localStorage.setItem(
+    'selected-theme',
+    document.body.classList.contains(lightTheme) ? 'light' : 'dark'
+  )
+  localStorage.setItem(
+    'selected-icon',
+    themeIcon.className
+  )
+})

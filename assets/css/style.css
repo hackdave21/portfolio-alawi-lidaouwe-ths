@@ -1,6 +1,6 @@
 /* ===========================cGOOGLE FONT ========================*/
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat+Underline&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 /* ===================================== VARIABLE CSS ===================*/
 
@@ -34,8 +34,8 @@
 
     /* .5rem = 8px | 1 rem = 16px */
 
-    --body-font :"Montserrat Alternates", sans-serif;
-    --second-font:"Grechen Fuemen", cursive;
+    --body-font :"Poppins", sans-serif;
+    --second-font:"Poppins", cursive;
     --biggest-font-size: 2.5rem;
     --h1-font-size: 1.5rem;
     --h2-font-size: 1.25rem;
@@ -74,6 +74,33 @@
     
 }  
 
+/* ================= THEME CLAIR ================= */
+body.light-theme {
+  --white-color: hsl(0, 0%, 10%);
+  --white-black: hsl(0, 0%, 98%);
+  --text-color: hsl(220, 8%, 35%);
+  --body-color: hsl(0, 0%, 96%);
+  --container-color: hsl(0, 0%, 100%);
+}
+
+/* Icône toggle */
+.theme-toggle {
+  cursor: pointer;
+}
+
+/* Ajustement navbar en clair */
+body.light-theme .nav {
+  background-color: hsla(0, 0%, 100%, 0.7);
+}
+
+/* Scrollbar clair */
+body.light-theme ::-webkit-scrollbar {
+  background-color: hsl(0, 0%, 85%);
+}
+
+body.light-theme ::-webkit-scrollbar-thumb {
+  background-color: hsl(0, 0%, 65%);
+}
 
 /*=============================+=== BASE  ==============================*/
 
@@ -208,7 +235,7 @@
 
 .perfil{
     position: relative;
-    background: var(--conic-gradient);
+    
     height: 415px;
     border-radius: 2rem;
     display: grid;
@@ -264,10 +291,10 @@
     }
 
     .info__circle{
-        width: 2rem;
-        height: 2rem;
-        background-color: var(--first-color);
+        width: 1.5rem;
+        height: 1.5rem;
         border-radius: 50%;
+        margin-bottom: 0.5rem;
     }
 
     .info__name{
