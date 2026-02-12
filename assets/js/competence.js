@@ -7,7 +7,7 @@ function animateCircle(circle, target) {
       const angle = current * 3.6;
       circle.style.background = `conic-gradient(
         var(--first-color) ${angle}deg,
-        var(--container-color) ${angle}deg
+        hsla(var(--hue), 30%, 8%, 0.1) ${angle}deg
       )`;
       span.textContent = Math.round(current) + '%';
       current += 0.2; // incrément lent

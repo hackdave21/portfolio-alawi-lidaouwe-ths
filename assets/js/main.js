@@ -61,29 +61,26 @@ sr.reveal('.projets__card,  .services__card, .experience__card , .abilitie__card
 const themeButton = document.getElementById('theme-toggle')
 const themeIcon = document.getElementById('theme-icon')
 const lightTheme = 'light-theme'
-const iconTheme = 'ri-sun-line'
+const sunIcon = 'ri-sun-line'
+const moonIcon = 'ri-moon-line'
 
 // thème sauvegardé
 const selectedTheme = localStorage.getItem('selected-theme')
-const selectedIcon = localStorage.getItem('selected-icon')
 
 // appliquer le thème sauvegardé
-if (selectedTheme) {
-  document.body.classList[selectedTheme === 'light' ? 'add' : 'remove'](lightTheme)
-  themeIcon.className = selectedIcon
+if (selectedTheme === 'light') {
+  document.body.classList.add(lightTheme)
+  themeIcon.classList.replace(moonIcon, sunIcon)
 }
 
 themeButton.addEventListener('click', () => {
   document.body.classList.toggle(lightTheme)
-  themeIcon.classList.toggle(iconTheme)
-  themeIcon.classList.toggle('ri-moon-line')
-
-  localStorage.setItem(
-    'selected-theme',
-    document.body.classList.contains(lightTheme) ? 'light' : 'dark'
-  )
-  localStorage.setItem(
-    'selected-icon',
-    themeIcon.className
-  )
+  
+  if (document.body.classList.contains(lightTheme)) {
+    themeIcon.classList.replace(moonIcon, sunIcon)
+    localStorage.setItem('selected-theme', 'light')
+  } else {
+    themeIcon.classList.replace(sunIcon, moonIcon)
+    localStorage.setItem('selected-theme', 'dark')
+  }
 })
