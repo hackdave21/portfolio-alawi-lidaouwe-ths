@@ -1,9 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ALAWI Lidaouwè — Portfolio</title>
+  <link rel="icon" type="image/png" href="logo 1/logo2_gold.png">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -113,12 +114,9 @@
     }
 
     html { scroll-behavior: smooth; font-family: 'Futura', sans-serif; }
-    body { background: var(--bg); color: var(--text); overflow-x: hidden; cursor: none; }
+    body { background: var(--bg); color: var(--text); overflow-x: hidden; }
 
-    /* Custom cursor */
-    #cursor { position: fixed; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: width .2s, height .2s, background .2s; }
-    #cursor-ring { position: fixed; width: 36px; height: 36px; border: 1.5px solid var(--accent); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: transform .12s ease, width .2s, height .2s, opacity .2s; opacity: 0.5; }
-    body:hover #cursor { opacity: 1; }
+
 
     /* Loader */
     #loader { position: fixed; inset: 0; background: #080C10; z-index: 10000; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 20px; transition: opacity 0.6s ease; }
@@ -222,15 +220,12 @@
     [data-theme="light"] .gradient-text { background: linear-gradient(135deg, #8B6914, var(--accent), #5A4210); -webkit-background-clip: text; background-clip: text; }
     [data-theme="light"] body::before { opacity: 0.15; }
 
-    /* Cursor size on interactive elements */
-    a:hover ~ #cursor, button:hover ~ #cursor { width: 18px; height: 18px; }
+
   </style>
 </head>
 <body>
 
-<!-- CURSOR -->
-<div id="cursor"></div>
-<div id="cursor-ring"></div>
+
 
 <!-- SCROLL PROGRESS -->
 <div id="scroll-progress"></div>
@@ -246,8 +241,8 @@
 <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
   <nav class="container mx-auto px-6 py-5 flex items-center justify-between max-w-7xl">
     <!-- Logo -->
-    <a href="#home" class="font-display font-bold text-lg tracking-tight" style="color:var(--accent)">
-      LA<span style="color:var(--text)">.</span>
+    <a href="#home" class="flex items-center">
+      <img src="logo 1/logo2_gold.png" alt="Logo" class="h-10 w-auto object-contain">
     </a>
 
     <!-- Desktop nav -->
@@ -898,7 +893,9 @@
   <div class="container mx-auto px-6 max-w-7xl">
     <div class="flex flex-col md:flex-row items-center justify-between gap-8">
 
-      <a href="#home" class="font-display font-black text-2xl" style="color:var(--accent)">LA<span style="color:var(--text)">.</span></a>
+      <a href="#home" class="flex items-center">
+        <img src="logo 1/logo2_gold.png" alt="Logo" class="h-12 w-auto object-contain">
+      </a>
 
       <ul class="flex items-center gap-8">
         <li><a href="#home" class="text-sm font-body hover:text-amber-400 transition-colors" style="color:var(--text-muted)" data-i18n="nav.home">Accueil</a></li>
@@ -921,7 +918,7 @@
     </div>
 
     <div class="border-t mt-8 pt-6 text-center" style="border-color:var(--border)">
-      <p class="text-xs font-body" style="color:var(--text-muted)">© 2025 ALAWI Lidaouwè — All Rights Reserved by <span style="color:var(--accent)">THS</span></p>
+      <p class="text-xs font-body" style="color:var(--text-muted)">© 2026 ALAWI Lidaouwè — All Rights Reserved by <span style="color:var(--accent)">TSF</span></p>
     </div>
   </div>
 </footer>
@@ -1025,27 +1022,7 @@ window.addEventListener('load', () => {
   }, 1900);
 });
 
-// ---- CURSOR ----
-const cursor = document.getElementById('cursor');
-const cursorRing = document.getElementById('cursor-ring');
-let mouseX=0, mouseY=0, ringX=0, ringY=0;
-document.addEventListener('mousemove', e => {
-  mouseX = e.clientX; mouseY = e.clientY;
-  cursor.style.left = mouseX + 'px';
-  cursor.style.top = mouseY + 'px';
-});
-function animateRing() {
-  ringX += (mouseX - ringX) * 0.12;
-  ringY += (mouseY - ringY) * 0.12;
-  cursorRing.style.left = ringX + 'px';
-  cursorRing.style.top = ringY + 'px';
-  requestAnimationFrame(animateRing);
-}
-animateRing();
-document.querySelectorAll('a,button,input,textarea').forEach(el => {
-  el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(2.5)'; cursorRing.style.opacity = '0'; });
-  el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.opacity = '0.5'; });
-});
+
 
 // ---- SCROLL PROGRESS ----
 window.addEventListener('scroll', () => {
