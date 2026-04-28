@@ -1,724 +1,1103 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="color-scheme" content="light dark">
-    <meta name="theme-color" content="#020408">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ALAWI Lidaouwè — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: ['class', '[data-theme="dark"]'],
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Syne', 'sans-serif'],
+            body: ['DM Sans', 'sans-serif'],
+          },
+          colors: {
+            accent: '#C8A96E',
+            'accent-light': '#E8C98E',
+            surface: {
+              dark: '#080C10',
+              'dark-2': '#0D1117',
+              'dark-3': '#111820',
+              'dark-4': '#161E28',
+              light: '#F8F6F2',
+              'light-2': '#EFEDE9',
+              'light-3': '#E5E2DD',
+            }
+          },
+          animation: {
+            'fade-up': 'fadeUp 0.7s ease forwards',
+            'fade-in': 'fadeIn 0.6s ease forwards',
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'spin-slow': 'spin 12s linear infinite',
+            'cursor-blink': 'cursorBlink 1.1s step-end infinite',
+          },
+          keyframes: {
+            fadeUp: { '0%': { opacity: '0', transform: 'translateY(30px)' }, '100%': { opacity: '1', transform: 'translateY(0)' }},
+            fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' }},
+            float: { '0%,100%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-16px)' }},
+            cursorBlink: { '0%,100%': { opacity: '1' }, '50%': { opacity: '0' }},
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    <!--==================== favincon =======================-->
-    <link rel="shortcut icon" href="assets/images/icone.png" type="image/x-icon">
+    :root {
+      --accent: #C8A96E;
+      --accent-light: #E8C98E;
+      --bg: #080C10;
+      --bg2: #0D1117;
+      --bg3: #111820;
+      --bg4: #161E28;
+      --text: #F0EDE8;
+      --text-muted: #8A9BB0;
+      --border: rgba(200,169,110,0.15);
+      --glass: rgba(13,17,23,0.7);
+    }
+    [data-theme="light"] {
+      --bg: #F8F6F2;
+      --bg2: #EFEDE9;
+      --bg3: #E5E2DD;
+      --bg4: #DAD7D0;
+      --text: #1A1612;
+      --text-muted: #6B6460;
+      --border: rgba(200,169,110,0.25);
+      --glass: rgba(248,246,242,0.8);
+    }
 
-    <!--=========================== REMIXICON=========================== -->
+    html { scroll-behavior: smooth; font-family: 'DM Sans', sans-serif; }
+    body { background: var(--bg); color: var(--text); overflow-x: hidden; cursor: none; }
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.css">
+    /* Custom cursor */
+    #cursor { position: fixed; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: width .2s, height .2s, background .2s; }
+    #cursor-ring { position: fixed; width: 36px; height: 36px; border: 1.5px solid var(--accent); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: transform .12s ease, width .2s, height .2s, opacity .2s; opacity: 0.5; }
+    body:hover #cursor { opacity: 1; }
 
-    <!-- ============================  CSS ======================-->
+    /* Loader */
+    #loader { position: fixed; inset: 0; background: #080C10; z-index: 10000; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 20px; transition: opacity 0.6s ease; }
+    #loader.fade-out { opacity: 0; pointer-events: none; }
+    .loader-bar { width: 200px; height: 1px; background: var(--bg3); position: relative; overflow: hidden; }
+    .loader-bar::after { content: ''; position: absolute; left: 0; top: 0; height: 100%; background: var(--accent); animation: loadBar 1.8s ease forwards; }
+    @keyframes loadBar { 0%{width:0} 100%{width:100%} }
 
-    <link rel="stylesheet" href="assets/css/style.css">
-    <title>Portfolio-Lidaouwè-ALAWI</title>
+    /* Grain overlay */
+    body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9990; opacity: 0.4; }
+
+    /* Glass card */
+    .glass { background: var(--glass); backdrop-filter: blur(20px); border: 1px solid var(--border); }
+
+    /* Scroll indicator */
+    #scroll-progress { position: fixed; top: 0; left: 0; height: 2px; background: linear-gradient(90deg, var(--accent), var(--accent-light)); z-index: 999; width: 0%; transition: width 0.1s; }
+
+    /* Nav */
+    .nav-link { position: relative; }
+    .nav-link::after { content: ''; position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%); width: 0; height: 1px; background: var(--accent); transition: width 0.3s ease; }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+    /* Section reveal animation */
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* Hero text animation */
+    @keyframes heroSlide { 0%{opacity:0;transform:translateY(60px)} 100%{opacity:1;transform:translateY(0)} }
+    .hero-animate { animation: heroSlide 1s ease forwards; }
+    .hero-animate-1 { animation-delay: 0.2s; opacity: 0; }
+    .hero-animate-2 { animation-delay: 0.45s; opacity: 0; }
+    .hero-animate-3 { animation-delay: 0.65s; opacity: 0; }
+    .hero-animate-4 { animation-delay: 0.85s; opacity: 0; }
+
+    /* Project card */
+    .proj-card { transition: transform 0.4s cubic-bezier(.25,.8,.25,1), box-shadow 0.4s; }
+    .proj-card:hover { transform: translateY(-8px) scale(1.01); box-shadow: 0 24px 60px rgba(200,169,110,0.1); }
+    .proj-card:hover .proj-overlay { opacity: 1; }
+    .proj-overlay { opacity: 0; transition: opacity 0.3s ease; }
+
+    /* Skill circle */
+    .skill-ring { transform: rotate(-90deg); }
+    .skill-ring circle { transition: stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1); }
+
+    /* Button */
+    .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent-light)); color: #0A0800; font-weight: 600; transition: transform 0.2s, box-shadow 0.2s, filter 0.2s; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(200,169,110,0.35); filter: brightness(1.08); }
+    .btn-outline { border: 1px solid var(--border); color: var(--text); transition: border-color 0.2s, background 0.2s, transform 0.2s; }
+    .btn-outline:hover { border-color: var(--accent); background: rgba(200,169,110,0.08); transform: translateY(-2px); }
+
+    /* Mobile menu */
+    #mobile-menu { transform: translateX(100%); transition: transform 0.4s cubic-bezier(.77,0,.18,1); }
+    #mobile-menu.open { transform: translateX(0); }
+    .hamburger span { display: block; width: 24px; height: 1.5px; background: var(--text); transition: transform 0.3s, opacity 0.3s, top 0.3s; position: absolute; }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg); top: 50%; }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg); top: 50%; }
+
+    /* Glowing dot */
+    .glow-dot { box-shadow: 0 0 12px var(--accent), 0 0 30px rgba(200,169,110,0.3); }
+
+    /* Timeline */
+    .timeline-line { background: linear-gradient(to bottom, var(--accent), transparent); }
+
+    /* Gradient text */
+    .gradient-text { background: linear-gradient(135deg, var(--accent), var(--accent-light), #F0EDE8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+    /* Orbit decoration */
+    @keyframes orbit { 0%{transform:rotate(0deg) translateX(120px) rotate(0deg)} 100%{transform:rotate(360deg) translateX(120px) rotate(-360deg)} }
+    .orbit-dot { animation: orbit 8s linear infinite; }
+    .orbit-dot-2 { animation: orbit 12s linear infinite reverse; }
+
+    /* Background mesh */
+    .mesh-bg { background: radial-gradient(ellipse at 20% 20%, rgba(200,169,110,0.06) 0%, transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(200,169,110,0.04) 0%, transparent 50%); }
+
+    /* Section title line */
+    .section-line { display: inline-flex; align-items: center; gap: 12px; }
+    .section-line::before { content: ''; display: block; width: 32px; height: 1px; background: var(--accent); }
+
+    /* Horizontal marquee */
+    @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+    .marquee-track { animation: marquee 20s linear infinite; display: flex; white-space: nowrap; }
+
+    /* Contact input */
+    .contact-input { background: var(--bg3); border: 1px solid var(--border); color: var(--text); transition: border-color 0.2s; outline: none; }
+    .contact-input:focus { border-color: var(--accent); }
+
+    /* Scrollup */
+    #scrollup { transform: translateY(20px); opacity: 0; transition: transform 0.3s, opacity 0.3s; }
+    #scrollup.show { transform: translateY(0); opacity: 1; }
+
+    /* Skill badge */
+    .skill-badge { border: 1px solid var(--border); transition: border-color 0.2s, background 0.2s; }
+    .skill-badge:hover { border-color: var(--accent); background: rgba(200,169,110,0.08); }
+
+    /* Theme light adjustments */
+    [data-theme="light"] .gradient-text { background: linear-gradient(135deg, #8B6914, var(--accent), #5A4210); -webkit-background-clip: text; background-clip: text; }
+    [data-theme="light"] body::before { opacity: 0.15; }
+
+    /* Cursor size on interactive elements */
+    a:hover ~ #cursor, button:hover ~ #cursor { width: 18px; height: 18px; }
+  </style>
 </head>
 <body>
-<!-- =================================  NAV =================================-->
-    <nav class="nav">
 
-        <ul class="nav__list">
-            <li>
-                <a href="#home" title="Home" class="nav__link active-link">
-                    <i class="ri-home-4-line"></i>
-                </a>
-            </li>
+<!-- CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
 
-            <li>
-                <a href="#projets" title="Projets" class="nav__link ">
-                    <i class="ri-folder-2-line"></i>
-                </a>
-            </li>
+<!-- SCROLL PROGRESS -->
+<div id="scroll-progress"></div>
 
-             <li>
-                <a href="#abilities" title="Compétence" class="nav__link">
-                    <i class="ri-puzzle-2-line"></i>
-                </a>
-            </li>
-
-            <li>
-                <a href="#services" title="Services" class="nav__link">
-                    <i class="ri-file-4-line"></i>
-                </a>
-            </li>
-
-            <li>
-                <a href="#experiences" title="Experience" class="nav__link">
-                    <i class="ri-honour-line"></i>
-                </a>
-            </li>
-
-            <li>
-  <button class="nav__link theme-toggle" id="theme-toggle" title="Changer le thème">
-    <i class="ri-moon-line" id="theme-icon"></i>
-  </button>
-</li>
-            
-        </ul>
-
-    </nav>
-    <!--================================ MAIN ===================================-->
-
-    <main class="main">
-        <!--======================================= HOME ===========================-->
-        <section class="home section" id="home">
-
-            <div class="home__container container grid">
-
-                <!--========================= PERFIL ========================-->
-
-                    <div class="perfil">
-                        <img src="assets/images/profil.jpeg" alt="image de profil" class="perfil__img">
-                        <div class="perfil__data">
-                            <h1 class="perfil__name">ALAWI <br> Lidaouwè</h1>
-                            <div class="perfil__bouton">
-                                <a href="#projets" class="button">Projets</a>
-                                <a href="#services" class="button button__black">Services</a>
-                            </div>
-                        </div>
-                    </div>
-
-                <!--========================= INFO ========================-->
-
-                    <div class="info">
-                        <div class="info__data">
-                            <div class="info__circle"> <img src="assets/images/iconor.png" alt=""></div>
-                            <h1 class="info__name">ALAWI Lidaouwè</h1>
-                        </div>
-                        <div class="info__image">
-                            <img src="assets/images/profil.jpeg" alt="image de appropos" class="info__img">
-                        </div>
-
-                        <p class="info__description">
-                         Je suis TechSolutionsFinder<br>  Je conçois, j'optimise, j'assemble<br>
-Le digital est mon terrain de jeu, la solution mon objectif
-                        </p>
-                        <a href="assets/images/cv lidaouwè ALAWI.pdf" download target="_blank" class="button button__black">Télécharger CV</a>
-                    </div>
-
-                <!--========================= ABOUT ========================-->
-
-                    <div class="about">
-                        <h3 class="about__name">
-                            ALAWI Lidaouwè <br> Développeur web et mobile 
-                        </h3>
-
-                        <p class="about__description">
-                            Passionné par la création d'expériences digitales innovantes, 
-                            je transforme vos idées en solutions web et mobile performantes. 
-                            Avec une expertise en design UI/UX et développement, 
-                            je crée des interfaces intuitives qui allient esthétique et fonctionnalité.
-                        </p>
-
-                        <div class="about__social">
-                           <img src="assets/images/vert.png" alt="Logo" height="190" width="190">
-                        </div>
-                        <div class="about__image">
-    <div>
-        <img src="assets/images/laravel.png" alt="Laravel" class="about__img">
-    </div>
-    <div>
-        <img src="assets/images/flutter.webp" alt="Flutter" class="about__img">
-    </div>
+<!-- LOADER -->
+<div id="loader">
+  <p class="font-display text-sm tracking-widest uppercase" style="color:var(--accent)">ALAWI Lidaouwè</p>
+  <div class="loader-bar"></div>
+  <p class="text-xs tracking-widest uppercase" style="color:var(--text-muted)">Chargement</p>
 </div>
 
-                        <p class="about__note">
-                            Spécialisé dans le développement web avec Laravel, mobile avec Flutter et le design d'interfaces modernes, 
-                            je m'engage à livrer des projets de qualité qui dépassent vos attentes.
-                        </p>
-
-                        <a href="#contact" class="button">Contact</a>
-                    </div>
-
-
-                <!--========================= SKILLS ========================-->
-
-
-                    <div class="skills">
-                        <h2 class="skills__title">
-                            Skills
-                        </h2>
-
-                        <div class="skills__items">
-                            <img src="assets/images/skill-vscode.webp" alt="image" class="skills__item">
-                            <img src="assets/images/skills-chrome.webp" alt="image" class="skills__item">
-                            <img src="assets/images/skills-csss.webp" alt="image" class="skills__item">
-                            <img src="assets/images/skills-figma.webp" alt="image" class="skills__item">
-                            <img src="assets/images/skills-github.webp" alt="image" class="skills__item">
-                            <img src="assets/images/skills-git.webp" alt="image" class="skills__item">
-                            <img src="assets/images/skills-react.webp" alt="image" class="skills__item">
-                            <img src="assets/images/skills-javascript.webp" alt="image" class="skills__item">
-                            <img src="assets/images/skills-html.webp" alt="image" class="skills__item">
-                        </div>
-                        <p class="skills__description">
-                            Maîtrise des technologies front-end modernes et des outils de design 
-                            pour créer des expériences utilisateur exceptionnelles.
-                        </p>
-                    </div>
-            </div>
-
-        </section>
-
-        <!--========================= SECTION PROJETS ========================-->
-        <section class="projets section" id="projets">
-
-
-            <h2 class="section__title">Mes Réalisations</h2>
-
-            <div class="projets__container container grid">
-                <article class="projets__card">
-                    <a href="https://butus-tg.netlify.app/" target="_blank" class="projets__image">
-                        <img src="assets/images/butus1.png" alt="image" class="projets__img">
-                    </a>
-                    <div class="projets__data">
-                        <h3 class="projets__name">Butus</h3>
-                        <p class="projets__description">Plateforme écologique innovante qui vise a faire de la vente des produit réutilisable
-                        </p>
-                        <div class="projets__skills">
-                            <img src="assets/images/laravel.png" alt="image" class="projets__skill">
-                            <img src="assets/images/bootstrap.png" alt="image" class="projets__skill">
-                            <img src="assets/images/mysql.png" alt="image" class="projets__skill">
-                        </div>
-
-                        <a href="https://butus-tg.netlify.app/" target="_blank" class="projets__button">
-                            <i class="ri-links-line"></i>
-                            <span>Voir le site</span>
-                        </a>
-
-                    </div>
-                </article>
-
-                <article class="projets__card">
-                    <a href="https://koulmed.com/" target="_blank" class="projets__image">
-                        <img src="assets/images/koulmed2.png" alt="image" class="projets__img">
-                    </a>
-                    <div class="projets__data">
-                        <h3 class="projets__name">Koulmed</h3>
-                        <p class="projets__description">Plateforme médicale complète avec prise de rendez-vous en ligne, gestion de dossiers patients et téléconsultation
-                        </p>
-                        <div class="projets__skills">
-                            <img src="assets/images/laravel.png" alt="image" class="projets__skill">
-                            <img src="assets/images/skills-tailwin-css.webp" alt="image" class="projets__skill">
-                        </div>
-
-                        <a href="https://koulmed.com/" target="_blank" class="projets__button">
-                            <i class="ri-links-line"></i>
-                            <span>Voir le Site</span>
-                        </a>
-
-                    </div>
-                </article>
-
-                <article class="projets__card">
-                    <a href="https://togo-diaspora.netlify.app/" target="_blank" class="projets__image">
-                        <img src="assets/images/togodiaspora.png" alt="image" class="projets__img">
-                    </a>
-                    <div class="projets__data">
-                        <h3 class="projets__name">Togo Diaspora</h3>
-                        <p class="projets__description">Plateforme dédiée à la communauté togolaise de la diaspora pour aller à la découverte du pays, des coutumes et de la vision qu'a le communauté TOGODIASPORA
-                        </p>
-                        <div class="projets__skills">
-                            <img src="assets/images/laravel.png" alt="image" class="projets__skill">
-                            <img src="assets/images/bootstrap.png" alt="image" class="projets__skill">
-                        </div>
-
-                        <a href="https://togo-diaspora.netlify.app/" target="_blank" class="projets__button">
-                            <i class="ri-links-line"></i>
-                            <span>Voir le site</span>
-                        </a>
-
-                    </div>
-                </article>
-
-                 <article class="projets__card">
-                    <a href="https://aiae-frontend.netlify.app/" target="_blank" class="projets__image">
-                        <img src="assets/images/aiae.png" alt="image" class="projets__img">
-                    </a>
-                    <div class="projets__data">
-                        <h3 class="projets__name">AIAE</h3>
-                        <p class="projets__description">Plateforme dédiée a une entreprise BTP qui est AIAE pour toutes sorte de simulations et de devis.
-                        </p>
-                        <div class="projets__skills">
-                            <img src="assets/images/laravel.png" alt="image" class="projets__skill">
-                            <img src="assets/images/skills-tailwin-css.webp" alt="image" class="projets__skill">
-                            <img src="assets/images/skills-html.webp" alt="image" class="projets__skill">
-                            <img src="assets/images/skills-javascript.webp" alt="image" class="projets__skill">
-                        </div>
-
-                        <a href="https://aiae-frontend.netlify.app/" target="_blank" class="projets__button">
-                            <i class="ri-links-line"></i>
-                            <span>Voir le site</span>
-                        </a>
-
-                    </div>
-                </article>
-
-                <article class="projets__card">
-                    <a href="#" target="_blank" class="projets__image">
-                        <img src="assets/images/lounge.png" alt="image" class="projets__img">
-                    </a>
-                    <div class="projets__data">
-                        <h3 class="projets__name">LUX LOUNGE</h3>
-                        <p class="projets__description">Application de réservation et gestion pour le restaurant LUX LOUNGE
-                        </p>
-                        <div class="projets__skills">
-                            <img src="assets/images/laravel.png" alt="image" class="projets__skill">
-                            <img src="assets/images/bootstrap.png" alt="image" class="projets__skill">
-                        </div>
-
-                        <a href="#" target="_blank" class="projets__button">
-                            <i class="ri-links-line"></i>
-                            <span>Voir le site</span>
-                        </a>
-
-                    </div>
-                </article>
-
-                <article class="projets__card">
-                    <a href="#" target="_blank" class="projets__image">
-                        <img src="assets/images/renteasy.png" alt="image" class="projets__img">
-                    </a>
-                    <div class="projets__data">
-                        <h3 class="projets__name">RentEasy</h3>
-                        <p class="projets__description">Plateforme de location immobilière facilitant la mise en relation entre propriétaires et locataires avec gestion complète des propriétés.
-                        </p>
-                        <div class="projets__skills">
-                            <img src="assets/images/laravel.png" alt="image" class="projets__skill">
-                            <img src="assets/images/skills-react.webp" alt="image" class="projets__skill">
-                            <img src="assets/images/skills-tailwin-css.webp" alt="image" class="projets__skill">
-                        </div>
-
-                        <a href="#" target="_blank" class="projets__button">
-                            <i class="ri-links-line"></i>
-                            <span>Voir le site</span>
-                        </a>
-
-                    </div>
-                </article>
-
-                <article class="projets__card">
-                    <a href="#" target="_blank" class="projets__image">
-                        <img src="assets/images/kofacademy.png" alt="image" class="projets__img">
-                    </a>
-                    <div class="projets__data">
-                        <h3 class="projets__name">KofAcademy</h3>
-                        <p class="projets__description">Plateforme d'apprentissage en ligne dédiée à la formation professionnelle et académique avec système de certification intégré.
-                        </p>
-                        <div class="projets__skills">
-                            <img src="assets/images/laravel.png" alt="image" class="projets__skill">
-                            <img src="assets/images/bootstrap.png" alt="image" class="projets__skill">
-                            <img src="assets/images/mysql.png" alt="image" class="projets__skill">
-                        </div>
-
-                        <a href="#" target="_blank" class="projets__button">
-                            <i class="ri-links-line"></i>
-                            <span>Voir le site</span>
-                        </a>
-
-                    </div>
-                </article>
-
-                <article class="projets__card">
-                    <a href="#" target="_blank" class="projets__image">
-                        <img src="assets/images/kap2.png" alt="image" class="projets__img">
-                    </a>
-                    <div class="projets__data">
-                        <h3 class="projets__name">KapOasis</h3>
-                        <p class="projets__description">Trois Applications mobiles innovantes de pour les marchands, les clients et les livreurs: Kapoasis Marchand, Kapoasis Client et Kapoasis Livreur.
-                        </p>
-                        <div class="projets__skills">
-                            <img src="assets/images/dart.png" alt="image" class="projets__skill">
-                            <img src="assets/images/flutter.webp" alt="image" class="projets__skill">
-                            <img src="assets/images/laravel.png" alt="image" class="projets__skill">
-                        </div>
-
-                        <a href="#" target="_blank" class="projets__button">
-                            <i class="ri-download-line"></i>
-                            <span>Télécharger</span>
-                        </a>
-
-                    </div>
-                </article>
-                <article class="projets__card">
-                    <a href="#" target="_blank" class="projets__image">
-                        <img src="assets/images/bus2.png" alt="image" class="projets__img">
-                    </a>
-                    <div class="projets__data">
-                        <h3 class="projets__name">BookBus</h3>
-                        <p class="projets__description">Application de réservation de transport en commun permettant aux utilisateurs de réserver et payer leurs trajets en bus de manière simple et efficace.
-                        </p>
-                        <div class="projets__skills">
-                            <img src="assets/images/laravel.png" alt="image" class="projets__skill">
-                            <img src="assets/images/dart.png" alt="image" class="projets__skill">
-                            <img src="assets/images/flutter.webp" alt="image" class="projets__skill">
-                        </div>
-
-                        <a href="#" target="_blank" class="projets__button">
-                            <i class="ri-download-line"></i>
-                            <span>Télécharger</span>
-                        </a>
-
-                    </div>
-                </article>
-                <article class="projets__card">
-                    <a href="https://www.figma.com/design/vIqKUazcLtAfZbbpGD787H/Logo-THS-V.-2?node-id=0-1&p=f&t=1DkHIG5mZQJWeeTI-0" target="_blank" class="projets__image">
-                        <img src="assets/images/ths.png" alt="image" class="projets__img">
-                    </a>
-                    <div class="projets__data">
-                        <h3 class="projets__name">Logo THS</h3>
-                        <p class="projets__description">Structure THS dans la conception des solutions numériques
-                        </p>
-                        <div class="projets__skills">
-                            <img src="assets/images/skills-figma.webp" alt="image" class="projets__skill">
-                        </div>
-
-                        <a href="https://www.figma.com/design/vIqKUazcLtAfZbbpGD787H/Logo-THS-V.-2?node-id=0-1&p=f&t=1DkHIG5mZQJWeeTI-0" target="_blank" class="projets__button">
-                            <i class="ri-links-line"></i>
-                            <span>Voir le design</span>
-                        </a>
-
-                    </div>
-                </article>
-            </div>
-        </section>
-
-
-
-       <section class="abilities" id="abilities">
-  <h2 class="abilities__heading">LANGAGES</h2>
-
-  <div class="abilities__wrapper">
-    <article class="abilitie__card">
-
-      <div class="ability-item">
-        <div class="ability-circle" data-rate="90"><span>0%</span></div>
-        <p>HTML5</p>
-      </div>
-
-      <div class="ability-item">
-        <div class="ability-circle" data-rate="85"><span>0%</span></div>
-        <p>CSS3</p>
-      </div>
-
-      <div class="ability-item">
-        <div class="ability-circle" data-rate="75"><span>0%</span></div>
-        <p>JavaScript</p>
-      </div>
-
-      <div class="ability-item">
-        <div class="ability-circle" data-rate="70"><span>0%</span></div>
-        <p>PHP</p>
-      </div>
-
-      <div class="ability-item">
-        <div class="ability-circle" data-rate="65"><span>0%</span></div>
-        <p>SQL</p>
-      </div>
-
-      <div class="ability-item">
-        <div class="ability-circle" data-rate="60"><span>0%</span></div>
-        <p>Dart</p>
-      </div>
-
-    </article>
-  </div>
-</section>
-<section class="abilities">
-  <h2 class="abilities__heading">TECHNOLOGIES</h2>
-
-  <div class="abilities__wrapper">
-    <article class="abilitie__card">
-
-      <div class="ability-item">
-        <div class="ability-circle" data-rate="80"><span>0%</span></div>
-        <p>React</p>
-      </div>
-
-      <div class="ability-item">
-        <div class="ability-circle" data-rate="85"><span>0%</span></div>
-        <p>Bootstrap</p>
-      </div>
-
-      <div class="ability-item">
-        <div class="ability-circle" data-rate="80"><span>0%</span></div>
-        <p>Tailwind CSS</p>
-      </div>
-
-      <div class="ability-item">
-        <div class="ability-circle" data-rate="75"><span>0%</span></div>
-        <p>Laravel</p>
-      </div>
-
-      <div class="ability-item">
-        <div class="ability-circle" data-rate="75"><span>0%</span></div>
-        <p>WordPress</p>
-      </div>
-
-    </article>
-  </div>
-</section>
-<section class="abilities">
-  <h2 class="abilities__heading">MOBILE</h2>
-
-  <div class="abilities__wrapper">
-    <article class="abilitie__card">
-
-      <div class="ability-item">
-        <div class="ability-circle" data-rate="80"><span>60%</span></div>
-        <p>MIT App Inventor</p>
-      </div>
-
-      <div class="ability-item">
-        <div class="ability-circle" data-rate="65"><span>0%</span></div>
-        <p>Flutter</p>
-      </div>
-
-    </article>
-  </div>
-</section>
-
-        <!--========================= SECTION SERVICE ========================-->
-
-        <section class="services section" id="services">
-
-            <h2 class="section__title">SERVICES</h2>
-            <div class="services__container container grid">
-                <article class="services__card">
-                    <div class="services__icon">
-                        <div class="services__circle"></div>
-                        <i class="ri-code-box-line"></i>
-                    </div>
-
-                    <h3 class="services__name">Développement Web</h3>
-
-                    <p class="services__description">
-                        Création de sites web modernes et responsives avec des technologies robustes. 
-                        De la conception frontend interactive au développement backend solide, 
-                        je propose des solutions web complètes et performantes.
-                    </p>
-                </article>
-
-                <article class="services__card">
-                    <div class="services__icon">
-                        <div class="services__circle"></div> 
-                        <i class="ri-seo-line"></i>
-                    </div>
-
-                    <h3 class="services__name">Développement Mobile</h3>
-
-                    <p class="services__description">
-                        Conception d'applications mobiles cross-platform élégantes et performantes. 
-                        Mon approche se concentre sur la fluidité des interfaces, 
-                        la réactivité et l'optimisation des ressources pour une expérience utilisateur sans compromis
-                    </p>
-                </article> 
-
-                 <article class="services__card">
-                    <div class="services__icon">
-                        <div class="services__circle"></div>
-                        <i class="ri-pen-nib-line"></i>
-                    </div>
-
-                    <h3 class="services__name">Design</h3>
-
-                    <p class="services__description">
-                       Création d'interfaces intuitives et esthétiques qui séduisent les utilisateurs. Je combine principes de design modernes, 
-                       tendances actuelles et sens artistique pour concevoir des maquettes qui transforment l'expérience utilisateur
-                    </p>
-                </article>
-
-                 
-
-            </div>
-
-        </section>
-
-        <section class="experience section" id="experiences">
-    <h2 class="section__title">Expériences Professionnelles</h2>
-
-    <div class="experience__container container grid">
-
-        <!-- CUBE -->
-        <article class="experience__card">
-            <div class="experience__company">
-                <img src="assets/images/cube.png" alt="Logo CUBE" class="experience__logo1" height="190px" width="190px">
-                <span>CUBE</span>
-            </div>
-
-            <div class="experience__data">
-                <h3 class="experience__professionnel">
-                    Tuteur en Développement Web et Mobile sur le projet D-CLIC
-                </h3>
-                <span class="experience__date">Octobre 2025 - Aujourd’hui</span>
-                <p class="experience__description">
-                    Encadrement des apprenants en développement web et mobile,
-                    accompagnement sur les projets pratiques et transmission
-                    des bonnes pratiques de programmation.
-                </p>
-            </div>
-        </article>
-
-        <!-- KOULMED -->
-        <article class="experience__card">
-            <div class="experience__company">
-                <img src="assets/images/koulmed.png" alt="Logo Koulmed" class="experience__logo1" height="200px" width="200px">
-                <span>Koulmed</span>
-            </div>
-
-            <div class="experience__data">
-                <h3 class="experience__professionnel">
-                    Développeur Web
-                </h3>
-                <span class="experience__date">Janvier 2025 - Juin 2025</span>
-                <p class="experience__description">
-                    Conception et développement d’applications web,
-                    intégration des interfaces utilisateurs et
-                    optimisation des performances.
-                </p>
-            </div>
-        </article>
-
-        <!-- KOFCORPORATION -->
-        <article class="experience__card">
-            <div class="experience__company">
-                <img src="assets/images/kof.png" alt="Logo KOFCORPORATION" class="experience__logo">
-                <span>KOFCORPORATION</span>
-            </div>
-
-            <div class="experience__data">
-                <h3 class="experience__professionnel">
-                    Développeur Web et Mobile
-                </h3>
-                <span class="experience__date">Mai 2024 - Décembre 2024</span>
-                <p class="experience__description">
-                    Développement d’applications web et mobiles,
-                    participation aux projets clients et
-                    maintenance des solutions existantes.
-                </p>
-            </div>
-        </article>
-
-        <!-- STAGE KOFCORPORATION -->
-        <article class="experience__card">
-            <div class="experience__company">
-                <img src="assets/images/kof.png" alt="Logo KOFCORPORATION" class="experience__logo">
-                <span>KOFCORPORATION</span>
-            </div>
-
-            <div class="experience__data">
-                <h3 class="experience__professionnel">
-                    Stagiaire en Développement Web et Mobile
-                </h3>
-                <span class="experience__date">Janvier 2023 - Avril 2024</span>
-                <p class="experience__description">
-                    Initiation au développement web et mobile,
-                    réalisation de projets pratiques et
-                    apprentissage des bases professionnelles.
-                </p>
-            </div>
-        </article>
-
-    </div>
-</section>
-
-        <section class="contact section" id="contact">
-
-            <h2 class="section__title">Contactez Moi</h2>
-
-            <div class="contact__container container grid">
-
-               <form action="https://formspree.io/f/xaqdylnr" method="POST" class="contact__form grid">
-    <div class="contact__group grid">
-        <input type="text" name="name" placeholder="Nom" required class="contact__input">
-        <input type="email" name="email" placeholder="Email" required class="contact__input">
-    </div>
-    <textarea name="message" placeholder="Message" required class="contact__input contact__area"></textarea>
-    
-    <!-- Champ honeypot anti-spam (optionnel mais recommandé) -->
-    <input type="text" name="_gotcha" style="display:none">
-    
-    <button type="submit" class="button contact__button">Envoyer</button>
-    
-    <p class="contact__message" id="contact__message"></p>
-</form>
-            </div>
-        </section>
-
-        
-    </main>
-
-    <!--================================== FOOTER ===============================-->
-
-    <footer class="footer">
-
-        <div class="footer__container container grid">
-            <div class="footer__content grid">
-               <a href="#" class="footer__logo">
-  <img src="assets/images/or.png" alt="Logo" height="190" width="190">
-</a>
-
-                <ul class="footer__links">
-
-                    <li>
-                        <a href="#home" class="footer__link">Accueil</a>
-                    </li>
-
-                       <li>
-                        <a href="#projets" class="footer__link">Projets</a>
-                    </li>
-
-                       <li>
-                        <a href="#services" class="footer__link">Services</a>
-                    </li>
-
-                </ul>
-
-            </div>
-            <div class="footer__social">
-
-                <a href="https://www.facebook.com/profile.php?id=100091380446410"  target="_blank" class="footer__social--link">
-                    <i class="ri-facebook-circle-line"></i>
-                </a>
-
-                 <a href="https://www.instagram.com/flutter_dave/"  target="_blank" class="footer__social--link">
-                    <i class="ri-instagram-line"></i>
-                </a>
-
-                 <a href="https://www.linkedin.com/in/lidaouw%C3%A8-alawi-34834b248/"  target="_blank" class="footer__social--link">
-                    <i class="ri-linkedin-line"></i>
-                </a>
-
-            </div>
-        </div>
-        <span class="footer__copy">
-            &#169; All Right Reserved By THS
-        </span>
-    </footer>
-
-    <!--======================================= SCROLL UP ================================-->
-    
-    <a href="" class="scrollup" id="scroll__up">
-        <i class="ri-arrow-up-line"></i>
+<!-- ======================== NAVBAR ======================== -->
+<header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+  <nav class="container mx-auto px-6 py-5 flex items-center justify-between max-w-7xl">
+    <!-- Logo -->
+    <a href="#home" class="font-display font-bold text-lg tracking-tight" style="color:var(--accent)">
+      LA<span style="color:var(--text)">.</span>
     </a>
 
-    <!--========================================= SCROLLREVEAL ================================-->
+    <!-- Desktop nav -->
+    <ul class="hidden md:flex items-center gap-8">
+      <li><a href="#home" data-i18n="nav.home" class="nav-link active text-sm tracking-wide font-body transition-colors hover:text-accent" style="color:var(--text-muted)">Accueil</a></li>
+      <li><a href="#about" data-i18n="nav.about" class="nav-link text-sm tracking-wide font-body transition-colors hover:text-accent" style="color:var(--text-muted)">À propos</a></li>
+      <li><a href="#projects" data-i18n="nav.projects" class="nav-link text-sm tracking-wide font-body transition-colors hover:text-accent" style="color:var(--text-muted)">Projets</a></li>
+      <li><a href="#skills" data-i18n="nav.skills" class="nav-link text-sm tracking-wide font-body transition-colors hover:text-accent" style="color:var(--text-muted)">Compétences</a></li>
+      <li><a href="#services" data-i18n="nav.services" class="nav-link text-sm tracking-wide font-body transition-colors hover:text-accent" style="color:var(--text-muted)">Services</a></li>
+      <li><a href="#experience" data-i18n="nav.exp" class="nav-link text-sm tracking-wide font-body transition-colors hover:text-accent" style="color:var(--text-muted)">Expérience</a></li>
+      <li><a href="#contact" data-i18n="nav.contact" class="nav-link text-sm tracking-wide font-body transition-colors hover:text-accent" style="color:var(--text-muted)">Contact</a></li>
+    </ul>
 
-    <script src="assets/js/scrollreveal.min.js">
+    <!-- Controls -->
+    <div class="flex items-center gap-3">
+      <!-- Lang toggle -->
+      <button id="lang-toggle" class="btn-outline text-xs font-display font-bold tracking-widest px-3 py-1.5 rounded-full">FR</button>
+      <!-- Theme toggle -->
+      <button id="theme-toggle" class="w-8 h-8 rounded-full flex items-center justify-center glass transition-all hover:scale-110">
+        <svg id="icon-moon" class="w-4 h-4" style="color:var(--accent)" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        <svg id="icon-sun" class="w-4 h-4 hidden" style="color:var(--accent)" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z"/></svg>
+      </button>
+      <!-- Hamburger -->
+      <button id="hamburger-btn" class="md:hidden w-8 h-8 flex items-center justify-center relative">
+        <div class="hamburger relative w-6 h-4" id="hamburger-icon">
+          <span style="top:0"></span>
+          <span style="top:50%"></span>
+          <span style="top:100%"></span>
+        </div>
+      </button>
+    </div>
+  </nav>
+</header>
 
-    </script>
+<!-- MOBILE MENU -->
+<div id="mobile-menu" class="fixed inset-y-0 right-0 w-72 z-40 glass flex flex-col pt-24 px-8 pb-8">
+  <ul class="flex flex-col gap-6 flex-1">
+    <li><a href="#home" data-i18n="nav.home" class="font-display text-2xl font-bold mobile-link">Accueil</a></li>
+    <li><a href="#about" data-i18n="nav.about" class="font-display text-2xl font-bold mobile-link">À propos</a></li>
+    <li><a href="#projects" data-i18n="nav.projects" class="font-display text-2xl font-bold mobile-link">Projets</a></li>
+    <li><a href="#skills" data-i18n="nav.skills" class="font-display text-2xl font-bold mobile-link">Compétences</a></li>
+    <li><a href="#services" data-i18n="nav.services" class="font-display text-2xl font-bold mobile-link">Services</a></li>
+    <li><a href="#experience" data-i18n="nav.exp" class="font-display text-2xl font-bold mobile-link">Expérience</a></li>
+    <li><a href="#contact" data-i18n="nav.contact" class="font-display text-2xl font-bold mobile-link">Contact</a></li>
+  </ul>
+  <div class="border-t pt-6" style="border-color:var(--border)">
+    <p class="text-xs tracking-widest uppercase mb-2" style="color:var(--text-muted)">Retrouvez-moi</p>
+    <div class="flex gap-4">
+      <a href="https://www.linkedin.com/in/lidaouw%C3%A8-alawi-34834b248/" target="_blank" class="w-8 h-8 glass rounded-full flex items-center justify-center hover:scale-110 transition-transform">
+        <svg class="w-4 h-4" style="color:var(--accent)" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/flutter_dave/" target="_blank" class="w-8 h-8 glass rounded-full flex items-center justify-center hover:scale-110 transition-transform">
+        <svg class="w-4 h-4" style="color:var(--accent)" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      </a>
+    </div>
+  </div>
+</div>
 
-    <!--============================================== EMAIL JS ===================================-->
+<main>
 
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<!-- ======================== HERO ======================== -->
+<section id="home" class="min-h-screen flex items-center relative overflow-hidden mesh-bg" style="padding-top:80px">
 
-    <!--======================================= MAIN JS -->
+  <!-- Decorative background circles -->
+  <div class="absolute inset-0 pointer-events-none overflow-hidden">
+    <div class="absolute -top-32 -right-32 w-96 h-96 rounded-full opacity-5" style="background:radial-gradient(circle, var(--accent) 0%, transparent 70%)"></div>
+    <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full opacity-5" style="background:radial-gradient(circle, var(--accent) 0%, transparent 70%)"></div>
+    <!-- Grid lines -->
+    <div class="absolute inset-0" style="background-image: linear-gradient(rgba(200,169,110,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(200,169,110,0.03) 1px, transparent 1px); background-size: 80px 80px;"></div>
+  </div>
 
-    <script src="assets/js/competence.js"></script>
-    <script src="assets/js/main.js"></script>
+  <div class="container mx-auto px-6 max-w-7xl">
+    <div class="grid lg:grid-cols-2 gap-16 items-center min-h-screen py-20">
+
+      <!-- Left content -->
+      <div>
+        <div class="hero-animate hero-animate-1 flex items-center gap-3 mb-8">
+          <span class="w-2 h-2 rounded-full glow-dot" style="background:var(--accent)"></span>
+          <span class="text-xs tracking-widest uppercase font-body" style="color:var(--accent)" data-i18n="hero.available">Disponible pour de nouveaux projets</span>
+        </div>
+
+        <h1 class="font-display hero-animate hero-animate-2 mb-6 leading-none">
+          <span class="block text-6xl sm:text-7xl lg:text-8xl font-black" style="color:var(--text)">ALAWI</span>
+          <span class="block text-6xl sm:text-7xl lg:text-8xl font-black gradient-text">Lidaouwè</span>
+        </h1>
+
+        <p class="hero-animate hero-animate-3 text-lg leading-relaxed max-w-md mb-10 font-body" style="color:var(--text-muted)" data-i18n="hero.subtitle">
+          Développeur web &amp; mobile. Je transforme vos idées en expériences digitales <em style="color:var(--accent);font-style:normal">mémorables</em> — du design au déploiement.
+        </p>
+
+        <div class="hero-animate hero-animate-4 flex flex-wrap gap-4">
+          <a href="#projects" class="btn-primary font-display text-sm tracking-wide px-7 py-3.5 rounded-full inline-flex items-center gap-2" data-i18n="hero.cta1">
+            Voir mes projets
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </a>
+          <a href="assets/images/cv lidaouwè ALAWI.pdf" download class="btn-outline font-display text-sm tracking-wide px-7 py-3.5 rounded-full inline-flex items-center gap-2" data-i18n="hero.cta2">
+            Télécharger CV
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          </a>
+        </div>
+
+        <!-- Stats -->
+        <div class="hero-animate hero-animate-4 mt-16 flex gap-10 border-t pt-10" style="border-color:var(--border)">
+          <div>
+            <p class="font-display font-black text-3xl gradient-text">10+</p>
+            <p class="text-xs tracking-wide uppercase mt-1 font-body" style="color:var(--text-muted)" data-i18n="hero.stat1">Projets réalisés</p>
+          </div>
+          <div style="width:1px;background:var(--border)"></div>
+          <div>
+            <p class="font-display font-black text-3xl gradient-text">3+</p>
+            <p class="text-xs tracking-wide uppercase mt-1 font-body" style="color:var(--text-muted)" data-i18n="hero.stat2">Années d'expérience</p>
+          </div>
+          <div style="width:1px;background:var(--border)"></div>
+          <div>
+            <p class="font-display font-black text-3xl gradient-text">5+</p>
+            <p class="text-xs tracking-wide uppercase mt-1 font-body" style="color:var(--text-muted)" data-i18n="hero.stat3">Technologies</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Profile image with orbit -->
+      <div class="hidden lg:flex items-center justify-center">
+        <div class="relative w-80 h-80">
+          <!-- Outer rings -->
+          <div class="absolute inset-0 rounded-full" style="border:1px solid var(--border); animation:spin 20s linear infinite"></div>
+          <div class="absolute inset-4 rounded-full" style="border:1px dashed rgba(200,169,110,0.1); animation:spin 15s linear infinite reverse"></div>
+
+          <!-- Orbit dots -->
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="orbit-dot absolute w-3 h-3 rounded-full glow-dot" style="background:var(--accent)"></div>
+          </div>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="orbit-dot-2 absolute w-2 h-2 rounded-full" style="background:var(--accent-light); box-shadow:0 0 8px var(--accent-light); animation-duration:16s;"></div>
+          </div>
+
+          <!-- Profile image -->
+          <div class="absolute inset-8 rounded-full overflow-hidden glass" style="border:1px solid var(--border)">
+            <img src="assets/images/profil.jpeg" alt="ALAWI Lidaouwè" class="w-full h-full object-cover object-center">
+          </div>
+
+          <!-- Tech badges floating -->
+          <div class="absolute -right-4 top-10 glass px-3 py-2 rounded-xl text-xs font-display font-bold" style="color:var(--accent); animation:float 5s ease-in-out infinite">
+            Laravel
+          </div>
+          <div class="absolute -left-6 bottom-12 glass px-3 py-2 rounded-xl text-xs font-display font-bold" style="color:var(--accent); animation:float 7s ease-in-out infinite reverse">
+            Flutter
+          </div>
+          <div class="absolute right-2 -bottom-4 glass px-3 py-2 rounded-xl text-xs font-display font-bold" style="color:var(--accent); animation:float 6s ease-in-out infinite 1s">
+            React
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scroll hint -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40">
+    <span class="text-xs tracking-widest uppercase font-body" style="color:var(--text-muted)" data-i18n="hero.scroll">Scroll</span>
+    <div class="w-px h-12" style="background:linear-gradient(to bottom, var(--accent), transparent)"></div>
+  </div>
+</section>
+
+<!-- ======================== MARQUEE ======================== -->
+<div class="py-5 overflow-hidden" style="border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg2)">
+  <div class="marquee-track">
+    <span class="inline-flex items-center gap-6 pr-6 font-display text-sm font-bold tracking-widest uppercase" style="color:var(--text-muted)">
+      <span style="color:var(--accent)">✦</span> Développement Web
+      <span style="color:var(--accent)">✦</span> Développement Mobile
+      <span style="color:var(--accent)">✦</span> Design UI/UX
+      <span style="color:var(--accent)">✦</span> Laravel
+      <span style="color:var(--accent)">✦</span> Flutter
+      <span style="color:var(--accent)">✦</span> React
+      <span style="color:var(--accent)">✦</span> Figma
+      <span style="color:var(--accent)">✦</span> TechSolutionsFinder
+      <span style="color:var(--accent)">✦</span> Développement Web
+      <span style="color:var(--accent)">✦</span> Développement Mobile
+      <span style="color:var(--accent)">✦</span> Design UI/UX
+      <span style="color:var(--accent)">✦</span> Laravel
+      <span style="color:var(--accent)">✦</span> Flutter
+      <span style="color:var(--accent)">✦</span> React
+      <span style="color:var(--accent)">✦</span> Figma
+      <span style="color:var(--accent)">✦</span> TechSolutionsFinder
+    </span>
+  </div>
+</div>
+
+<!-- ======================== ABOUT ======================== -->
+<section id="about" class="py-32 mesh-bg">
+  <div class="container mx-auto px-6 max-w-7xl">
+
+    <div class="grid lg:grid-cols-2 gap-20 items-center">
+
+      <!-- Image side -->
+      <div class="reveal relative">
+        <div class="relative">
+          <!-- Image frame -->
+          <div class="relative overflow-hidden rounded-2xl" style="border:1px solid var(--border)">
+            <img src="assets/images/profil.jpeg" alt="ALAWI Lidaouwè" class="w-full aspect-[4/5] object-cover object-top" loading="lazy">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+          </div>
+          <!-- Floating card -->
+          <div class="absolute -bottom-6 -right-6 glass px-6 py-4 rounded-2xl reveal reveal-delay-2">
+            <p class="font-display font-black text-2xl gradient-text">TechSolutions</p>
+            <p class="text-xs tracking-wide uppercase mt-1" style="color:var(--text-muted)">Finder</p>
+          </div>
+          <!-- Accent bar -->
+          <div class="absolute top-6 -left-3 w-1 h-24 rounded-full" style="background:linear-gradient(to bottom, var(--accent), transparent)"></div>
+        </div>
+      </div>
+
+      <!-- Content side -->
+      <div>
+        <div class="section-line text-xs tracking-widest uppercase font-body mb-4 reveal" style="color:var(--accent)" data-i18n="about.label">À propos de moi</div>
+        <h2 class="font-display font-black text-4xl lg:text-5xl leading-none mb-8 reveal reveal-delay-1" style="color:var(--text)" data-i18n="about.title">
+          Développeur passionné,<br><span class="gradient-text">créateur de solutions</span>
+        </h2>
+
+        <p class="text-base leading-relaxed mb-6 reveal reveal-delay-2" style="color:var(--text-muted)" data-i18n="about.p1">
+          Passionné par la création d'expériences digitales innovantes, je transforme vos idées en solutions web et mobile performantes. Avec une expertise en design UI/UX et développement, je crée des interfaces intuitives qui allient esthétique et fonctionnalité.
+        </p>
+        <p class="text-base leading-relaxed mb-10 reveal reveal-delay-3" style="color:var(--text-muted)" data-i18n="about.p2">
+          Spécialisé dans le développement web avec Laravel, mobile avec Flutter et le design d'interfaces modernes, je m'engage à livrer des projets de qualité qui dépassent vos attentes.
+        </p>
+
+        <!-- Tech logos -->
+        <div class="flex items-center gap-4 mb-10 reveal reveal-delay-3">
+          <img src="assets/images/laravel.png" alt="Laravel" class="h-10 w-10 object-contain opacity-80 hover:opacity-100 transition-opacity hover:scale-110 transition-transform">
+          <img src="assets/images/flutter.webp" alt="Flutter" class="h-10 w-10 object-contain opacity-80 hover:opacity-100 transition-opacity hover:scale-110 transition-transform">
+          <img src="assets/images/skills-react.webp" alt="React" class="h-10 w-10 object-contain opacity-80 hover:opacity-100 transition-opacity hover:scale-110 transition-transform">
+          <img src="assets/images/skills-figma.webp" alt="Figma" class="h-10 w-10 object-contain opacity-80 hover:opacity-100 transition-opacity hover:scale-110 transition-transform">
+        </div>
+
+        <a href="#contact" class="btn-primary font-display text-sm tracking-wide px-7 py-3.5 rounded-full inline-flex items-center gap-2 reveal reveal-delay-4" data-i18n="about.cta">
+          Travaillons ensemble
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ======================== PROJECTS ======================== -->
+<section id="projects" class="py-32" style="background:var(--bg2)">
+  <div class="container mx-auto px-6 max-w-7xl">
+
+    <div class="flex items-end justify-between mb-16">
+      <div>
+        <div class="section-line text-xs tracking-widest uppercase font-body mb-4 reveal" style="color:var(--accent)" data-i18n="projects.label">Mes réalisations</div>
+        <h2 class="font-display font-black text-4xl lg:text-5xl leading-none reveal reveal-delay-1" style="color:var(--text)" data-i18n="projects.title">Projets<br><span class="gradient-text">sélectionnés</span></h2>
+      </div>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- Project cards -->
+      <article class="proj-card glass rounded-2xl overflow-hidden group reveal">
+        <a href="https://butus-tg.netlify.app/" target="_blank" class="block relative overflow-hidden aspect-video">
+          <img src="assets/images/butus1.png" alt="Butus" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+          <div class="proj-overlay absolute inset-0 flex items-center justify-center" style="background:rgba(200,169,110,0.15);backdrop-filter:blur(2px)">
+            <span class="glass px-4 py-2 rounded-full text-sm font-display font-bold" style="color:var(--accent)">Voir le site ↗</span>
+          </div>
+        </a>
+        <div class="p-6">
+          <h3 class="font-display font-bold text-xl mb-2" style="color:var(--text)">Butus</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-muted)" data-i18n="proj.butus">Plateforme écologique innovante dédiée à la vente de produits réutilisables.</p>
+          <div class="flex gap-2">
+            <img src="assets/images/laravel.png" alt="Laravel" class="h-6 w-6 object-contain opacity-70">
+            <img src="assets/images/bootstrap.png" alt="Bootstrap" class="h-6 w-6 object-contain opacity-70">
+            <img src="assets/images/mysql.png" alt="MySQL" class="h-6 w-6 object-contain opacity-70">
+          </div>
+        </div>
+      </article>
+
+      <article class="proj-card glass rounded-2xl overflow-hidden group reveal reveal-delay-1">
+        <a href="https://koulmed.com/" target="_blank" class="block relative overflow-hidden aspect-video">
+          <img src="assets/images/koulmed2.png" alt="Koulmed" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+          <div class="proj-overlay absolute inset-0 flex items-center justify-center" style="background:rgba(200,169,110,0.15);backdrop-filter:blur(2px)">
+            <span class="glass px-4 py-2 rounded-full text-sm font-display font-bold" style="color:var(--accent)">Voir le site ↗</span>
+          </div>
+        </a>
+        <div class="p-6">
+          <h3 class="font-display font-bold text-xl mb-2" style="color:var(--text)">Koulmed</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-muted)" data-i18n="proj.koulmed">Plateforme médicale complète avec prise de rendez-vous, dossiers patients et téléconsultation.</p>
+          <div class="flex gap-2">
+            <img src="assets/images/laravel.png" alt="Laravel" class="h-6 w-6 object-contain opacity-70">
+            <img src="assets/images/skills-tailwin-css.webp" alt="Tailwind" class="h-6 w-6 object-contain opacity-70">
+          </div>
+        </div>
+      </article>
+
+      <article class="proj-card glass rounded-2xl overflow-hidden group reveal reveal-delay-2">
+        <a href="https://togo-diaspora.netlify.app/" target="_blank" class="block relative overflow-hidden aspect-video">
+          <img src="assets/images/togodiaspora.png" alt="Togo Diaspora" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+          <div class="proj-overlay absolute inset-0 flex items-center justify-center" style="background:rgba(200,169,110,0.15);backdrop-filter:blur(2px)">
+            <span class="glass px-4 py-2 rounded-full text-sm font-display font-bold" style="color:var(--accent)">Voir le site ↗</span>
+          </div>
+        </a>
+        <div class="p-6">
+          <h3 class="font-display font-bold text-xl mb-2" style="color:var(--text)">Togo Diaspora</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-muted)" data-i18n="proj.togo">Plateforme dédiée à la communauté togolaise de la diaspora — découverte du pays et des coutumes.</p>
+          <div class="flex gap-2">
+            <img src="assets/images/laravel.png" alt="Laravel" class="h-6 w-6 object-contain opacity-70">
+            <img src="assets/images/bootstrap.png" alt="Bootstrap" class="h-6 w-6 object-contain opacity-70">
+          </div>
+        </div>
+      </article>
+
+      <article class="proj-card glass rounded-2xl overflow-hidden group reveal">
+        <a href="https://aiae-frontend.netlify.app/" target="_blank" class="block relative overflow-hidden aspect-video">
+          <img src="assets/images/aiae.png" alt="AIAE" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+          <div class="proj-overlay absolute inset-0 flex items-center justify-center" style="background:rgba(200,169,110,0.15);backdrop-filter:blur(2px)">
+            <span class="glass px-4 py-2 rounded-full text-sm font-display font-bold" style="color:var(--accent)">Voir le site ↗</span>
+          </div>
+        </a>
+        <div class="p-6">
+          <h3 class="font-display font-bold text-xl mb-2" style="color:var(--text)">AIAE</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-muted)" data-i18n="proj.aiae">Plateforme BTP pour simulations et devis en ligne pour l'entreprise AIAE.</p>
+          <div class="flex gap-2">
+            <img src="assets/images/laravel.png" alt="Laravel" class="h-6 w-6 object-contain opacity-70">
+            <img src="assets/images/skills-tailwin-css.webp" alt="Tailwind" class="h-6 w-6 object-contain opacity-70">
+            <img src="assets/images/skills-javascript.webp" alt="JS" class="h-6 w-6 object-contain opacity-70">
+          </div>
+        </div>
+      </article>
+
+      <article class="proj-card glass rounded-2xl overflow-hidden group reveal reveal-delay-1">
+        <div class="block relative overflow-hidden aspect-video">
+          <img src="assets/images/lounge.png" alt="Lux Lounge" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+        </div>
+        <div class="p-6">
+          <h3 class="font-display font-bold text-xl mb-2" style="color:var(--text)">LUX LOUNGE</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-muted)" data-i18n="proj.lounge">Application de réservation et gestion pour le restaurant LUX LOUNGE.</p>
+          <div class="flex gap-2">
+            <img src="assets/images/laravel.png" alt="Laravel" class="h-6 w-6 object-contain opacity-70">
+            <img src="assets/images/bootstrap.png" alt="Bootstrap" class="h-6 w-6 object-contain opacity-70">
+          </div>
+        </div>
+      </article>
+
+      <article class="proj-card glass rounded-2xl overflow-hidden group reveal reveal-delay-2">
+        <div class="block relative overflow-hidden aspect-video">
+          <img src="assets/images/renteasy.png" alt="RentEasy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+        </div>
+        <div class="p-6">
+          <h3 class="font-display font-bold text-xl mb-2" style="color:var(--text)">RentEasy</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-muted)" data-i18n="proj.renteasy">Plateforme de location immobilière facilitant la mise en relation propriétaires / locataires.</p>
+          <div class="flex gap-2">
+            <img src="assets/images/laravel.png" alt="Laravel" class="h-6 w-6 object-contain opacity-70">
+            <img src="assets/images/skills-react.webp" alt="React" class="h-6 w-6 object-contain opacity-70">
+            <img src="assets/images/skills-tailwin-css.webp" alt="Tailwind" class="h-6 w-6 object-contain opacity-70">
+          </div>
+        </div>
+      </article>
+
+      <article class="proj-card glass rounded-2xl overflow-hidden group reveal">
+        <div class="block relative overflow-hidden aspect-video">
+          <img src="assets/images/kofacademy.png" alt="KofAcademy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+        </div>
+        <div class="p-6">
+          <h3 class="font-display font-bold text-xl mb-2" style="color:var(--text)">KofAcademy</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-muted)" data-i18n="proj.kofacademy">Plateforme d'apprentissage en ligne avec système de certification intégré.</p>
+          <div class="flex gap-2">
+            <img src="assets/images/laravel.png" alt="Laravel" class="h-6 w-6 object-contain opacity-70">
+            <img src="assets/images/bootstrap.png" alt="Bootstrap" class="h-6 w-6 object-contain opacity-70">
+            <img src="assets/images/mysql.png" alt="MySQL" class="h-6 w-6 object-contain opacity-70">
+          </div>
+        </div>
+      </article>
+
+      <article class="proj-card glass rounded-2xl overflow-hidden group reveal reveal-delay-1">
+        <div class="block relative overflow-hidden aspect-video">
+          <img src="assets/images/kap2.png" alt="KapOasis" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+        </div>
+        <div class="p-6">
+          <h3 class="font-display font-bold text-xl mb-2" style="color:var(--text)">KapOasis</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-muted)" data-i18n="proj.kapoasis">Trois apps mobiles innovantes : Marchand, Client et Livreur — ecosystème complet.</p>
+          <div class="flex gap-2">
+            <img src="assets/images/dart.png" alt="Dart" class="h-6 w-6 object-contain opacity-70">
+            <img src="assets/images/flutter.webp" alt="Flutter" class="h-6 w-6 object-contain opacity-70">
+            <img src="assets/images/laravel.png" alt="Laravel" class="h-6 w-6 object-contain opacity-70">
+          </div>
+        </div>
+      </article>
+
+      <article class="proj-card glass rounded-2xl overflow-hidden group reveal reveal-delay-2">
+        <div class="block relative overflow-hidden aspect-video">
+          <img src="assets/images/bus2.png" alt="BookBus" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+        </div>
+        <div class="p-6">
+          <h3 class="font-display font-bold text-xl mb-2" style="color:var(--text)">BookBus</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-muted)" data-i18n="proj.bookbus">App de réservation de transport en commun — réserver et payer ses trajets simplement.</p>
+          <div class="flex gap-2">
+            <img src="assets/images/laravel.png" alt="Laravel" class="h-6 w-6 object-contain opacity-70">
+            <img src="assets/images/dart.png" alt="Dart" class="h-6 w-6 object-contain opacity-70">
+            <img src="assets/images/flutter.webp" alt="Flutter" class="h-6 w-6 object-contain opacity-70">
+          </div>
+        </div>
+      </article>
+
+      <article class="proj-card glass rounded-2xl overflow-hidden group reveal sm:col-span-2 lg:col-span-1">
+        <a href="https://www.figma.com/design/vIqKUazcLtAfZbbpGD787H/Logo-THS-V.-2" target="_blank" class="block relative overflow-hidden aspect-video">
+          <img src="assets/images/ths.png" alt="Logo THS" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+          <div class="proj-overlay absolute inset-0 flex items-center justify-center" style="background:rgba(200,169,110,0.15);backdrop-filter:blur(2px)">
+            <span class="glass px-4 py-2 rounded-full text-sm font-display font-bold" style="color:var(--accent)">Voir le design ↗</span>
+          </div>
+        </a>
+        <div class="p-6">
+          <h3 class="font-display font-bold text-xl mb-2" style="color:var(--text)">Logo THS</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-muted)" data-i18n="proj.ths">Conception identité visuelle pour la structure THS — solutions numériques.</p>
+          <div class="flex gap-2">
+            <img src="assets/images/skills-figma.webp" alt="Figma" class="h-6 w-6 object-contain opacity-70">
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ======================== SKILLS ======================== -->
+<section id="skills" class="py-32 mesh-bg">
+  <div class="container mx-auto px-6 max-w-7xl">
+
+    <div class="mb-16">
+      <div class="section-line text-xs tracking-widest uppercase font-body mb-4 reveal" style="color:var(--accent)" data-i18n="skills.label">Compétences</div>
+      <h2 class="font-display font-black text-4xl lg:text-5xl leading-none reveal reveal-delay-1" style="color:var(--text)" data-i18n="skills.title">Mon arsenal<br><span class="gradient-text">technique</span></h2>
+    </div>
+
+    <!-- Tool icons row -->
+    <div class="flex flex-wrap gap-4 mb-16 reveal reveal-delay-2">
+      <img src="assets/images/skill-vscode.webp" alt="VSCode" class="h-12 w-12 object-contain opacity-60 hover:opacity-100 hover:scale-110 transition-all duration-200">
+      <img src="assets/images/skills-chrome.webp" alt="Chrome" class="h-12 w-12 object-contain opacity-60 hover:opacity-100 hover:scale-110 transition-all duration-200">
+      <img src="assets/images/skills-csss.webp" alt="CSS" class="h-12 w-12 object-contain opacity-60 hover:opacity-100 hover:scale-110 transition-all duration-200">
+      <img src="assets/images/skills-figma.webp" alt="Figma" class="h-12 w-12 object-contain opacity-60 hover:opacity-100 hover:scale-110 transition-all duration-200">
+      <img src="assets/images/skills-github.webp" alt="GitHub" class="h-12 w-12 object-contain opacity-60 hover:opacity-100 hover:scale-110 transition-all duration-200">
+      <img src="assets/images/skills-git.webp" alt="Git" class="h-12 w-12 object-contain opacity-60 hover:opacity-100 hover:scale-110 transition-all duration-200">
+      <img src="assets/images/skills-react.webp" alt="React" class="h-12 w-12 object-contain opacity-60 hover:opacity-100 hover:scale-110 transition-all duration-200">
+      <img src="assets/images/skills-javascript.webp" alt="JavaScript" class="h-12 w-12 object-contain opacity-60 hover:opacity-100 hover:scale-110 transition-all duration-200">
+      <img src="assets/images/skills-html.webp" alt="HTML" class="h-12 w-12 object-contain opacity-60 hover:opacity-100 hover:scale-110 transition-all duration-200">
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-12">
+
+      <!-- Languages -->
+      <div class="reveal">
+        <h3 class="font-display font-bold text-sm tracking-widest uppercase mb-6" style="color:var(--accent)" data-i18n="skills.lang">Langages</h3>
+        <div class="space-y-4">
+          <div class="skill-item" data-skill="90"><div class="flex justify-between text-sm mb-2"><span class="font-body" style="color:var(--text)">HTML5</span><span class="font-display font-bold" style="color:var(--accent)">90%</span></div><div class="h-px w-full rounded-full overflow-hidden" style="background:var(--bg3)"><div class="h-full rounded-full skill-bar" style="background:linear-gradient(90deg, var(--accent), var(--accent-light)); width:0%; transition:width 1.2s cubic-bezier(.4,0,.2,1)" data-w="90%"></div></div></div>
+          <div class="skill-item" data-skill="85"><div class="flex justify-between text-sm mb-2"><span class="font-body" style="color:var(--text)">CSS3</span><span class="font-display font-bold" style="color:var(--accent)">85%</span></div><div class="h-px w-full rounded-full overflow-hidden" style="background:var(--bg3)"><div class="h-full rounded-full skill-bar" style="background:linear-gradient(90deg, var(--accent), var(--accent-light)); width:0%; transition:width 1.2s cubic-bezier(.4,0,.2,1)" data-w="85%"></div></div></div>
+          <div class="skill-item" data-skill="75"><div class="flex justify-between text-sm mb-2"><span class="font-body" style="color:var(--text)">JavaScript</span><span class="font-display font-bold" style="color:var(--accent)">75%</span></div><div class="h-px w-full rounded-full overflow-hidden" style="background:var(--bg3)"><div class="h-full rounded-full skill-bar" style="background:linear-gradient(90deg, var(--accent), var(--accent-light)); width:0%; transition:width 1.2s cubic-bezier(.4,0,.2,1)" data-w="75%"></div></div></div>
+          <div class="skill-item" data-skill="70"><div class="flex justify-between text-sm mb-2"><span class="font-body" style="color:var(--text)">PHP</span><span class="font-display font-bold" style="color:var(--accent)">70%</span></div><div class="h-px w-full rounded-full overflow-hidden" style="background:var(--bg3)"><div class="h-full rounded-full skill-bar" style="background:linear-gradient(90deg, var(--accent), var(--accent-light)); width:0%; transition:width 1.2s cubic-bezier(.4,0,.2,1)" data-w="70%"></div></div></div>
+          <div class="skill-item" data-skill="65"><div class="flex justify-between text-sm mb-2"><span class="font-body" style="color:var(--text)">SQL</span><span class="font-display font-bold" style="color:var(--accent)">65%</span></div><div class="h-px w-full rounded-full overflow-hidden" style="background:var(--bg3)"><div class="h-full rounded-full skill-bar" style="background:linear-gradient(90deg, var(--accent), var(--accent-light)); width:0%; transition:width 1.2s cubic-bezier(.4,0,.2,1)" data-w="65%"></div></div></div>
+          <div class="skill-item" data-skill="60"><div class="flex justify-between text-sm mb-2"><span class="font-body" style="color:var(--text)">Dart</span><span class="font-display font-bold" style="color:var(--accent)">60%</span></div><div class="h-px w-full rounded-full overflow-hidden" style="background:var(--bg3)"><div class="h-full rounded-full skill-bar" style="background:linear-gradient(90deg, var(--accent), var(--accent-light)); width:0%; transition:width 1.2s cubic-bezier(.4,0,.2,1)" data-w="60%"></div></div></div>
+        </div>
+      </div>
+
+      <!-- Technologies -->
+      <div class="reveal reveal-delay-1">
+        <h3 class="font-display font-bold text-sm tracking-widest uppercase mb-6" style="color:var(--accent)" data-i18n="skills.tech">Technologies</h3>
+        <div class="space-y-4">
+          <div class="skill-item"><div class="flex justify-between text-sm mb-2"><span class="font-body" style="color:var(--text)">React</span><span class="font-display font-bold" style="color:var(--accent)">80%</span></div><div class="h-px w-full rounded-full overflow-hidden" style="background:var(--bg3)"><div class="h-full rounded-full skill-bar" style="background:linear-gradient(90deg, var(--accent), var(--accent-light)); width:0%; transition:width 1.2s cubic-bezier(.4,0,.2,1)" data-w="80%"></div></div></div>
+          <div class="skill-item"><div class="flex justify-between text-sm mb-2"><span class="font-body" style="color:var(--text)">Bootstrap</span><span class="font-display font-bold" style="color:var(--accent)">85%</span></div><div class="h-px w-full rounded-full overflow-hidden" style="background:var(--bg3)"><div class="h-full rounded-full skill-bar" style="background:linear-gradient(90deg, var(--accent), var(--accent-light)); width:0%; transition:width 1.2s cubic-bezier(.4,0,.2,1)" data-w="85%"></div></div></div>
+          <div class="skill-item"><div class="flex justify-between text-sm mb-2"><span class="font-body" style="color:var(--text)">Tailwind CSS</span><span class="font-display font-bold" style="color:var(--accent)">80%</span></div><div class="h-px w-full rounded-full overflow-hidden" style="background:var(--bg3)"><div class="h-full rounded-full skill-bar" style="background:linear-gradient(90deg, var(--accent), var(--accent-light)); width:0%; transition:width 1.2s cubic-bezier(.4,0,.2,1)" data-w="80%"></div></div></div>
+          <div class="skill-item"><div class="flex justify-between text-sm mb-2"><span class="font-body" style="color:var(--text)">Laravel</span><span class="font-display font-bold" style="color:var(--accent)">75%</span></div><div class="h-px w-full rounded-full overflow-hidden" style="background:var(--bg3)"><div class="h-full rounded-full skill-bar" style="background:linear-gradient(90deg, var(--accent), var(--accent-light)); width:0%; transition:width 1.2s cubic-bezier(.4,0,.2,1)" data-w="75%"></div></div></div>
+          <div class="skill-item"><div class="flex justify-between text-sm mb-2"><span class="font-body" style="color:var(--text)">WordPress</span><span class="font-display font-bold" style="color:var(--accent)">75%</span></div><div class="h-px w-full rounded-full overflow-hidden" style="background:var(--bg3)"><div class="h-full rounded-full skill-bar" style="background:linear-gradient(90deg, var(--accent), var(--accent-light)); width:0%; transition:width 1.2s cubic-bezier(.4,0,.2,1)" data-w="75%"></div></div></div>
+        </div>
+      </div>
+
+      <!-- Mobile + badges -->
+      <div class="reveal reveal-delay-2">
+        <h3 class="font-display font-bold text-sm tracking-widest uppercase mb-6" style="color:var(--accent)" data-i18n="skills.mobile">Mobile & Design</h3>
+        <div class="space-y-4 mb-8">
+          <div class="skill-item"><div class="flex justify-between text-sm mb-2"><span class="font-body" style="color:var(--text)">MIT App Inventor</span><span class="font-display font-bold" style="color:var(--accent)">80%</span></div><div class="h-px w-full rounded-full overflow-hidden" style="background:var(--bg3)"><div class="h-full rounded-full skill-bar" style="background:linear-gradient(90deg, var(--accent), var(--accent-light)); width:0%; transition:width 1.2s cubic-bezier(.4,0,.2,1)" data-w="80%"></div></div></div>
+          <div class="skill-item"><div class="flex justify-between text-sm mb-2"><span class="font-body" style="color:var(--text)">Flutter</span><span class="font-display font-bold" style="color:var(--accent)">65%</span></div><div class="h-px w-full rounded-full overflow-hidden" style="background:var(--bg3)"><div class="h-full rounded-full skill-bar" style="background:linear-gradient(90deg, var(--accent), var(--accent-light)); width:0%; transition:width 1.2s cubic-bezier(.4,0,.2,1)" data-w="65%"></div></div></div>
+          <div class="skill-item"><div class="flex justify-between text-sm mb-2"><span class="font-body" style="color:var(--text)">Figma</span><span class="font-display font-bold" style="color:var(--accent)">80%</span></div><div class="h-px w-full rounded-full overflow-hidden" style="background:var(--bg3)"><div class="h-full rounded-full skill-bar" style="background:linear-gradient(90deg, var(--accent), var(--accent-light)); width:0%; transition:width 1.2s cubic-bezier(.4,0,.2,1)" data-w="80%"></div></div></div>
+        </div>
+        <!-- Soft skill badges -->
+        <div class="flex flex-wrap gap-2">
+          <span class="skill-badge text-xs font-display font-bold tracking-wide px-3 py-1.5 rounded-full" style="color:var(--text-muted)" data-i18n="badge.creativity">Créativité</span>
+          <span class="skill-badge text-xs font-display font-bold tracking-wide px-3 py-1.5 rounded-full" style="color:var(--text-muted)" data-i18n="badge.teamwork">Travail en équipe</span>
+          <span class="skill-badge text-xs font-display font-bold tracking-wide px-3 py-1.5 rounded-full" style="color:var(--text-muted)" data-i18n="badge.adapt">Adaptabilité</span>
+          <span class="skill-badge text-xs font-display font-bold tracking-wide px-3 py-1.5 rounded-full" style="color:var(--text-muted)" data-i18n="badge.curious">Curiosité</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ======================== SERVICES ======================== -->
+<section id="services" class="py-32" style="background:var(--bg2)">
+  <div class="container mx-auto px-6 max-w-7xl">
+
+    <div class="mb-16">
+      <div class="section-line text-xs tracking-widest uppercase font-body mb-4 reveal" style="color:var(--accent)" data-i18n="services.label">Ce que je propose</div>
+      <h2 class="font-display font-black text-4xl lg:text-5xl leading-none reveal reveal-delay-1" style="color:var(--text)" data-i18n="services.title">Mes<br><span class="gradient-text">services</span></h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+
+      <div class="glass rounded-2xl p-8 group hover:border-amber-500/30 transition-all duration-300 reveal">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background:rgba(200,169,110,0.1)">
+          <svg class="w-6 h-6" style="color:var(--accent)" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+        </div>
+        <h3 class="font-display font-bold text-xl mb-4" style="color:var(--text)" data-i18n="services.web.title">Développement Web</h3>
+        <p class="text-sm leading-relaxed" style="color:var(--text-muted)" data-i18n="services.web.desc">Création de sites web modernes et responsives. De la conception frontend interactive au backend solide — des solutions complètes et performantes.</p>
+      </div>
+
+      <div class="glass rounded-2xl p-8 group hover:border-amber-500/30 transition-all duration-300 reveal reveal-delay-1" style="margin-top:1.5rem">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background:rgba(200,169,110,0.1)">
+          <svg class="w-6 h-6" style="color:var(--accent)" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+        </div>
+        <h3 class="font-display font-bold text-xl mb-4" style="color:var(--text)" data-i18n="services.mobile.title">Développement Mobile</h3>
+        <p class="text-sm leading-relaxed" style="color:var(--text-muted)" data-i18n="services.mobile.desc">Applications mobiles cross-platform élégantes et performantes. Fluidité des interfaces, réactivité et optimisation des ressources pour une UX sans compromis.</p>
+      </div>
+
+      <div class="glass rounded-2xl p-8 group hover:border-amber-500/30 transition-all duration-300 reveal reveal-delay-2">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background:rgba(200,169,110,0.1)">
+          <svg class="w-6 h-6" style="color:var(--accent)" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
+        </div>
+        <h3 class="font-display font-bold text-xl mb-4" style="color:var(--text)" data-i18n="services.design.title">Design UI/UX</h3>
+        <p class="text-sm leading-relaxed" style="color:var(--text-muted)" data-i18n="services.design.desc">Interfaces intuitives et esthétiques alliant principes de design modernes, tendances actuelles et sens artistique pour transformer l'expérience utilisateur.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ======================== EXPERIENCE ======================== -->
+<section id="experience" class="py-32 mesh-bg">
+  <div class="container mx-auto px-6 max-w-7xl">
+
+    <div class="mb-16">
+      <div class="section-line text-xs tracking-widest uppercase font-body mb-4 reveal" style="color:var(--accent)" data-i18n="exp.label">Mon parcours</div>
+      <h2 class="font-display font-black text-4xl lg:text-5xl leading-none reveal reveal-delay-1" style="color:var(--text)" data-i18n="exp.title">Expériences<br><span class="gradient-text">professionnelles</span></h2>
+    </div>
+
+    <div class="max-w-3xl mx-auto">
+
+      <!-- Timeline item -->
+      <div class="relative pl-8 pb-12 reveal" style="border-left:1px solid var(--border)">
+        <div class="absolute -left-1.5 top-0 w-3 h-3 rounded-full glow-dot" style="background:var(--accent)"></div>
+        <div class="glass rounded-2xl p-6">
+          <div class="flex items-start gap-4">
+            <img src="assets/images/cube.png" alt="CUBE" class="w-12 h-12 object-contain opacity-90 flex-shrink-0">
+            <div>
+              <h3 class="font-display font-bold text-lg mb-1" style="color:var(--text)" data-i18n="exp.cube.role">Tuteur en Développement Web & Mobile — Projet D-CLIC</h3>
+              <p class="font-display font-bold text-sm mb-1" style="color:var(--accent)">CUBE</p>
+              <p class="text-xs mb-4 font-body" style="color:var(--text-muted)" data-i18n="exp.cube.date">Octobre 2025 — Aujourd'hui</p>
+              <p class="text-sm leading-relaxed" style="color:var(--text-muted)" data-i18n="exp.cube.desc">Encadrement des apprenants en développement web et mobile, accompagnement sur les projets pratiques et transmission des bonnes pratiques de programmation.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative pl-8 pb-12 reveal reveal-delay-1" style="border-left:1px solid var(--border)">
+        <div class="absolute -left-1.5 top-0 w-3 h-3 rounded-full" style="background:var(--bg3); border:1px solid var(--accent)"></div>
+        <div class="glass rounded-2xl p-6">
+          <div class="flex items-start gap-4">
+            <img src="assets/images/koulmed.png" alt="Koulmed" class="w-12 h-12 object-contain opacity-90 flex-shrink-0">
+            <div>
+              <h3 class="font-display font-bold text-lg mb-1" style="color:var(--text)" data-i18n="exp.koulmed.role">Développeur Web</h3>
+              <p class="font-display font-bold text-sm mb-1" style="color:var(--accent)">Koulmed</p>
+              <p class="text-xs mb-4 font-body" style="color:var(--text-muted)" data-i18n="exp.koulmed.date">Janvier 2025 — Juin 2025</p>
+              <p class="text-sm leading-relaxed" style="color:var(--text-muted)" data-i18n="exp.koulmed.desc">Conception et développement d'applications web, intégration des interfaces utilisateurs et optimisation des performances.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative pl-8 pb-12 reveal reveal-delay-2" style="border-left:1px solid var(--border)">
+        <div class="absolute -left-1.5 top-0 w-3 h-3 rounded-full" style="background:var(--bg3); border:1px solid var(--accent)"></div>
+        <div class="glass rounded-2xl p-6">
+          <div class="flex items-start gap-4">
+            <img src="assets/images/kof.png" alt="KOFCORPORATION" class="w-12 h-12 object-contain opacity-90 flex-shrink-0">
+            <div>
+              <h3 class="font-display font-bold text-lg mb-1" style="color:var(--text)" data-i18n="exp.kof.role">Développeur Web & Mobile</h3>
+              <p class="font-display font-bold text-sm mb-1" style="color:var(--accent)">KOFCORPORATION</p>
+              <p class="text-xs mb-4 font-body" style="color:var(--text-muted)" data-i18n="exp.kof.date">Mai 2024 — Décembre 2024</p>
+              <p class="text-sm leading-relaxed" style="color:var(--text-muted)" data-i18n="exp.kof.desc">Développement d'applications web et mobiles, participation aux projets clients et maintenance des solutions existantes.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative pl-8 reveal reveal-delay-3" style="border-left:1px solid transparent">
+        <div class="absolute -left-1.5 top-0 w-3 h-3 rounded-full" style="background:var(--bg3); border:1px solid var(--border)"></div>
+        <div class="glass rounded-2xl p-6">
+          <div class="flex items-start gap-4">
+            <img src="assets/images/kof.png" alt="KOFCORPORATION" class="w-12 h-12 object-contain opacity-90 flex-shrink-0">
+            <div>
+              <h3 class="font-display font-bold text-lg mb-1" style="color:var(--text)" data-i18n="exp.stage.role">Stagiaire — Développement Web & Mobile</h3>
+              <p class="font-display font-bold text-sm mb-1" style="color:var(--accent)">KOFCORPORATION</p>
+              <p class="text-xs mb-4 font-body" style="color:var(--text-muted)" data-i18n="exp.stage.date">Janvier 2023 — Avril 2024</p>
+              <p class="text-sm leading-relaxed" style="color:var(--text-muted)" data-i18n="exp.stage.desc">Initiation au développement web et mobile, réalisation de projets pratiques et apprentissage des bases professionnelles.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ======================== CONTACT ======================== -->
+<section id="contact" class="py-32" style="background:var(--bg2)">
+  <div class="container mx-auto px-6 max-w-5xl">
+
+    <div class="text-center mb-16">
+      <div class="section-line justify-center text-xs tracking-widest uppercase font-body mb-4 reveal" style="color:var(--accent)" data-i18n="contact.label">Travaillons ensemble</div>
+      <h2 class="font-display font-black text-4xl lg:text-6xl leading-none mb-4 reveal reveal-delay-1" style="color:var(--text)">
+        <span data-i18n="contact.title1">Prêt à démarrer</span><br><span class="gradient-text" data-i18n="contact.title2">votre projet ?</span>
+      </h2>
+      <p class="text-base max-w-md mx-auto reveal reveal-delay-2" style="color:var(--text-muted)" data-i18n="contact.subtitle">Envoyez-moi un message et commençons à bâtir quelque chose d'extraordinaire.</p>
+    </div>
+
+    <form action="https://formspree.io/f/xaqdylnr" method="POST" class="glass rounded-2xl p-8 lg:p-12 reveal reveal-delay-2">
+      <div class="grid sm:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block text-xs tracking-widest uppercase mb-2 font-body" style="color:var(--text-muted)" data-i18n="contact.name">Nom</label>
+          <input type="text" name="name" required class="contact-input w-full px-4 py-3.5 rounded-xl text-sm font-body" placeholder="Votre nom" data-i18n-ph="contact.name.ph">
+        </div>
+        <div>
+          <label class="block text-xs tracking-widest uppercase mb-2 font-body" style="color:var(--text-muted)" data-i18n="contact.email">Email</label>
+          <input type="email" name="email" required class="contact-input w-full px-4 py-3.5 rounded-xl text-sm font-body" placeholder="votre@email.com">
+        </div>
+      </div>
+      <div class="mb-6">
+        <label class="block text-xs tracking-widest uppercase mb-2 font-body" style="color:var(--text-muted)" data-i18n="contact.message">Message</label>
+        <textarea name="message" required rows="5" class="contact-input w-full px-4 py-3.5 rounded-xl text-sm font-body resize-none" placeholder="Décrivez votre projet..." data-i18n-ph="contact.message.ph"></textarea>
+      </div>
+      <input type="text" name="_gotcha" style="display:none">
+      <button type="submit" class="btn-primary w-full font-display font-bold tracking-wide py-4 rounded-xl inline-flex items-center justify-center gap-2 text-sm" data-i18n="contact.send">
+        Envoyer le message
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+      </button>
+    </form>
+
+  </div>
+</section>
+
+</main>
+
+<!-- ======================== FOOTER ======================== -->
+<footer class="py-12" style="background:var(--bg);border-top:1px solid var(--border)">
+  <div class="container mx-auto px-6 max-w-7xl">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+
+      <a href="#home" class="font-display font-black text-2xl" style="color:var(--accent)">LA<span style="color:var(--text)">.</span></a>
+
+      <ul class="flex items-center gap-8">
+        <li><a href="#home" class="text-sm font-body hover:text-amber-400 transition-colors" style="color:var(--text-muted)" data-i18n="nav.home">Accueil</a></li>
+        <li><a href="#projects" class="text-sm font-body hover:text-amber-400 transition-colors" style="color:var(--text-muted)" data-i18n="nav.projects">Projets</a></li>
+        <li><a href="#services" class="text-sm font-body hover:text-amber-400 transition-colors" style="color:var(--text-muted)" data-i18n="nav.services">Services</a></li>
+        <li><a href="#contact" class="text-sm font-body hover:text-amber-400 transition-colors" style="color:var(--text-muted)" data-i18n="nav.contact">Contact</a></li>
+      </ul>
+
+      <div class="flex gap-3">
+        <a href="https://www.facebook.com/profile.php?id=100091380446410" target="_blank" class="w-9 h-9 glass rounded-full flex items-center justify-center hover:scale-110 transition-transform">
+          <svg class="w-4 h-4" style="color:var(--text-muted)" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/flutter_dave/" target="_blank" class="w-9 h-9 glass rounded-full flex items-center justify-center hover:scale-110 transition-transform">
+          <svg class="w-4 h-4" style="color:var(--text-muted)" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/lidaouw%C3%A8-alawi-34834b248/" target="_blank" class="w-9 h-9 glass rounded-full flex items-center justify-center hover:scale-110 transition-transform">
+          <svg class="w-4 h-4" style="color:var(--text-muted)" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="border-t mt-8 pt-6 text-center" style="border-color:var(--border)">
+      <p class="text-xs font-body" style="color:var(--text-muted)">© 2025 ALAWI Lidaouwè — All Rights Reserved by <span style="color:var(--accent)">THS</span></p>
+    </div>
+  </div>
+</footer>
+
+<!-- Scroll up -->
+<a href="#home" id="scrollup" class="fixed bottom-6 right-6 w-10 h-10 glass rounded-full flex items-center justify-center z-50 hover:scale-110 transition-transform">
+  <svg class="w-4 h-4" style="color:var(--accent)" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+</a>
+
+<script>
+// ---- TRANSLATIONS ----
+const translations = {
+  fr: {
+    'nav.home':'Accueil','nav.about':'À propos','nav.projects':'Projets','nav.skills':'Compétences','nav.services':'Services','nav.exp':'Expérience','nav.contact':'Contact',
+    'hero.available':'Disponible pour de nouveaux projets',
+    'hero.subtitle':'Développeur web & mobile. Je transforme vos idées en expériences digitales mémorables — du design au déploiement.',
+    'hero.cta1':'Voir mes projets','hero.cta2':'Télécharger CV',
+    'hero.stat1':'Projets réalisés','hero.stat2':"Années d'expérience",'hero.stat3':'Technologies',
+    'hero.scroll':'Scroll',
+    'about.label':'À propos de moi','about.title':'Développeur passionné,','about.p1':"Passionné par la création d'expériences digitales innovantes, je transforme vos idées en solutions web et mobile performantes. Avec une expertise en design UI/UX et développement, je crée des interfaces intuitives qui allient esthétique et fonctionnalité.",'about.p2':"Spécialisé dans le développement web avec Laravel, mobile avec Flutter et le design d'interfaces modernes, je m'engage à livrer des projets de qualité qui dépassent vos attentes.",'about.cta':'Travaillons ensemble',
+    'projects.label':'Mes réalisations','projects.title':'Projets',
+    'proj.butus':'Plateforme écologique innovante dédiée à la vente de produits réutilisables.',
+    'proj.koulmed':'Plateforme médicale complète avec prise de rendez-vous, dossiers patients et téléconsultation.',
+    'proj.togo':'Plateforme dédiée à la communauté togolaise de la diaspora — découverte du pays et des coutumes.',
+    'proj.aiae':'Plateforme BTP pour simulations et devis en ligne pour l\'entreprise AIAE.',
+    'proj.lounge':'Application de réservation et gestion pour le restaurant LUX LOUNGE.',
+    'proj.renteasy':'Plateforme de location immobilière facilitant la mise en relation propriétaires / locataires.',
+    'proj.kofacademy':"Plateforme d'apprentissage en ligne avec système de certification intégré.",
+    'proj.kapoasis':'Trois apps mobiles innovantes : Marchand, Client et Livreur — ecosystème complet.',
+    'proj.bookbus':'App de réservation de transport en commun — réserver et payer ses trajets simplement.',
+    'proj.ths':'Conception identité visuelle pour la structure THS — solutions numériques.',
+    'skills.label':'Compétences','skills.title':'Mon arsenal','skills.lang':'Langages','skills.tech':'Technologies','skills.mobile':'Mobile & Design',
+    'badge.creativity':'Créativité','badge.teamwork':'Travail en équipe','badge.adapt':'Adaptabilité','badge.curious':'Curiosité',
+    'services.label':'Ce que je propose','services.title':'Mes',
+    'services.web.title':'Développement Web','services.web.desc':'Création de sites web modernes et responsives. De la conception frontend interactive au backend solide — des solutions complètes et performantes.',
+    'services.mobile.title':'Développement Mobile','services.mobile.desc':'Applications mobiles cross-platform élégantes et performantes. Fluidité des interfaces, réactivité et optimisation des ressources pour une UX sans compromis.',
+    'services.design.title':'Design UI/UX','services.design.desc':"Interfaces intuitives et esthétiques alliant principes de design modernes, tendances actuelles et sens artistique pour transformer l'expérience utilisateur.",
+    'exp.label':'Mon parcours','exp.title':'Expériences',
+    'exp.cube.role':'Tuteur en Développement Web & Mobile — Projet D-CLIC','exp.cube.date':'Octobre 2025 — Aujourd\'hui','exp.cube.desc':"Encadrement des apprenants en développement web et mobile, accompagnement sur les projets pratiques et transmission des bonnes pratiques de programmation.",
+    'exp.koulmed.role':'Développeur Web','exp.koulmed.date':'Janvier 2025 — Juin 2025','exp.koulmed.desc':"Conception et développement d'applications web, intégration des interfaces utilisateurs et optimisation des performances.",
+    'exp.kof.role':'Développeur Web & Mobile','exp.kof.date':'Mai 2024 — Décembre 2024','exp.kof.desc':"Développement d'applications web et mobiles, participation aux projets clients et maintenance des solutions existantes.",
+    'exp.stage.role':'Stagiaire — Développement Web & Mobile','exp.stage.date':'Janvier 2023 — Avril 2024','exp.stage.desc':"Initiation au développement web et mobile, réalisation de projets pratiques et apprentissage des bases professionnelles.",
+    'contact.label':'Travaillons ensemble','contact.title1':'Prêt à démarrer','contact.title2':'votre projet ?','contact.subtitle':"Envoyez-moi un message et commençons à bâtir quelque chose d'extraordinaire.",
+    'contact.name':'Nom','contact.name.ph':'Votre nom','contact.email':'Email','contact.message':'Message','contact.message.ph':'Décrivez votre projet...','contact.send':'Envoyer le message',
+  },
+  en: {
+    'nav.home':'Home','nav.about':'About','nav.projects':'Projects','nav.skills':'Skills','nav.services':'Services','nav.exp':'Experience','nav.contact':'Contact',
+    'hero.available':'Available for new projects',
+    'hero.subtitle':'Web & mobile developer. I turn your ideas into memorable digital experiences — from design to deployment.',
+    'hero.cta1':'View my work','hero.cta2':'Download CV',
+    'hero.stat1':'Projects delivered','hero.stat2':'Years of experience','hero.stat3':'Technologies',
+    'hero.scroll':'Scroll',
+    'about.label':'About me','about.title':'Passionate developer,','about.p1':'Passionate about creating innovative digital experiences, I transform your ideas into high-performance web and mobile solutions. With expertise in UI/UX design and development, I create intuitive interfaces that blend aesthetics and functionality.','about.p2':'Specialized in web development with Laravel, mobile with Flutter and modern UI design, I am committed to delivering quality projects that exceed your expectations.','about.cta':"Let's work together",
+    'projects.label':'My work','projects.title':'Selected',
+    'proj.butus':'Innovative ecological platform dedicated to selling reusable products.',
+    'proj.koulmed':'Complete medical platform with online appointment booking, patient records and teleconsultation.',
+    'proj.togo':'Platform dedicated to the Togolese diaspora community — discover the country and its culture.',
+    'proj.aiae':'Construction platform for online simulations and quotes for the AIAE company.',
+    'proj.lounge':'Reservation and management app for LUX LOUNGE restaurant.',
+    'proj.renteasy':'Real estate rental platform connecting landlords and tenants with full property management.',
+    'proj.kofacademy':'Online learning platform for professional and academic training with integrated certification.',
+    'proj.kapoasis':'Three innovative mobile apps: Merchant, Client and Delivery — a complete ecosystem.',
+    'proj.bookbus':'Bus booking app — reserve and pay for journeys simply and efficiently.',
+    'proj.ths':'Visual identity design for THS — digital solutions.',
+    'skills.label':'Skills','skills.title':'My technical','skills.lang':'Languages','skills.tech':'Technologies','skills.mobile':'Mobile & Design',
+    'badge.creativity':'Creativity','badge.teamwork':'Teamwork','badge.adapt':'Adaptability','badge.curious':'Curiosity',
+    'services.label':'What I offer','services.title':'My',
+    'services.web.title':'Web Development','services.web.desc':'Creation of modern, responsive websites. From interactive frontend design to solid backend — complete and high-performance solutions.',
+    'services.mobile.title':'Mobile Development','services.mobile.desc':'Elegant and performant cross-platform mobile apps. Fluid interfaces, responsiveness and resource optimization for an uncompromising user experience.',
+    'services.design.title':'UI/UX Design','services.design.desc':"Intuitive and aesthetic interfaces combining modern design principles, current trends and artistic flair to transform the user experience.",
+    'exp.label':'My journey','exp.title':'Professional',
+    'exp.cube.role':'Web & Mobile Development Tutor — D-CLIC Project','exp.cube.date':'October 2025 — Present','exp.cube.desc':"Mentoring learners in web and mobile development, guiding practical projects and sharing programming best practices.",
+    'exp.koulmed.role':'Web Developer','exp.koulmed.date':'January 2025 — June 2025','exp.koulmed.desc':"Design and development of web applications, user interface integration and performance optimization.",
+    'exp.kof.role':'Web & Mobile Developer','exp.kof.date':'May 2024 — December 2024','exp.kof.desc':"Development of web and mobile apps, participation in client projects and maintenance of existing solutions.",
+    'exp.stage.role':'Intern — Web & Mobile Development','exp.stage.date':'January 2023 — April 2024','exp.stage.desc':"Introduction to web and mobile development, completion of practical projects and learning professional foundations.",
+    'contact.label':"Let's work together",'contact.title1':'Ready to start','contact.title2':'your project?','contact.subtitle':"Send me a message and let's build something extraordinary together.",
+    'contact.name':'Name','contact.name.ph':'Your name','contact.email':'Email','contact.message':'Message','contact.message.ph':'Describe your project...','contact.send':'Send message',
+  }
+};
+
+let currentLang = 'fr';
+
+function applyTranslations(lang) {
+  const t = translations[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if(t[key]) el.textContent = t[key];
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const key = el.getAttribute('data-i18n-ph');
+    if(t[key]) el.placeholder = t[key];
+  });
+}
+
+// ---- LOADER ----
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const loader = document.getElementById('loader');
+    loader.classList.add('fade-out');
+    setTimeout(() => loader.style.display = 'none', 700);
+  }, 1900);
+});
+
+// ---- CURSOR ----
+const cursor = document.getElementById('cursor');
+const cursorRing = document.getElementById('cursor-ring');
+let mouseX=0, mouseY=0, ringX=0, ringY=0;
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX; mouseY = e.clientY;
+  cursor.style.left = mouseX + 'px';
+  cursor.style.top = mouseY + 'px';
+});
+function animateRing() {
+  ringX += (mouseX - ringX) * 0.12;
+  ringY += (mouseY - ringY) * 0.12;
+  cursorRing.style.left = ringX + 'px';
+  cursorRing.style.top = ringY + 'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+document.querySelectorAll('a,button,input,textarea').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(2.5)'; cursorRing.style.opacity = '0'; });
+  el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; cursorRing.style.opacity = '0.5'; });
+});
+
+// ---- SCROLL PROGRESS ----
+window.addEventListener('scroll', () => {
+  const st = window.scrollY;
+  const docH = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById('scroll-progress').style.width = (st / docH * 100) + '%';
+
+  // navbar glass on scroll
+  const nav = document.getElementById('navbar');
+  if(st > 60) { nav.style.background = 'var(--glass)'; nav.style.backdropFilter = 'blur(20px)'; nav.style.borderBottom = '1px solid var(--border)'; }
+  else { nav.style.background = 'transparent'; nav.style.backdropFilter = 'none'; nav.style.borderBottom = 'none'; }
+
+  // scrollup
+  const su = document.getElementById('scrollup');
+  if(st > 400) su.classList.add('show'); else su.classList.remove('show');
+});
+
+// ---- REVEAL on scroll ----
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ---- SKILL BARS ----
+const skillObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      e.target.querySelectorAll('.skill-bar').forEach(bar => {
+        const w = bar.getAttribute('data-w');
+        setTimeout(() => bar.style.width = w, 200);
+      });
+      skillObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.reveal').forEach(el => {
+  if(el.querySelector('.skill-bar')) skillObs.observe(el);
+});
+// Also trigger for non-reveal parent
+document.querySelectorAll('#skills').forEach(el => skillObs.observe(el));
+
+// ---- THEME TOGGLE ----
+const themeToggle = document.getElementById('theme-toggle');
+const iconMoon = document.getElementById('icon-moon');
+const iconSun = document.getElementById('icon-sun');
+let isDark = true;
+themeToggle.addEventListener('click', () => {
+  isDark = !isDark;
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  iconMoon.classList.toggle('hidden', !isDark);
+  iconSun.classList.toggle('hidden', isDark);
+});
+
+// ---- LANG TOGGLE ----
+const langToggle = document.getElementById('lang-toggle');
+langToggle.addEventListener('click', () => {
+  currentLang = currentLang === 'fr' ? 'en' : 'fr';
+  langToggle.textContent = currentLang.toUpperCase();
+  applyTranslations(currentLang);
+});
+
+// ---- MOBILE MENU ----
+const hamburgerBtn = document.getElementById('hamburger-btn');
+const hamburgerIcon = document.getElementById('hamburger-icon');
+const mobileMenu = document.getElementById('mobile-menu');
+hamburgerBtn.addEventListener('click', () => {
+  mobileMenu.classList.toggle('open');
+  hamburgerIcon.classList.toggle('open');
+});
+document.querySelectorAll('.mobile-link').forEach(link => {
+  link.addEventListener('click', () => {
+    mobileMenu.classList.remove('open');
+    hamburgerIcon.classList.remove('open');
+  });
+});
+
+// ---- ACTIVE NAV LINK ----
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-link');
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY;
+  sections.forEach(section => {
+    const h = section.offsetHeight;
+    const top = section.offsetTop - 100;
+    const id = section.getAttribute('id');
+    if(scrollY >= top && scrollY < top + h) {
+      navLinks.forEach(l => { l.classList.remove('active'); if(l.getAttribute('href') === '#'+id) l.classList.add('active'); });
+    }
+  });
+});
+</script>
 </body>
 </html>
