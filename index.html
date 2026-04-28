@@ -4,9 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ALAWI Lidaouwè — Portfolio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -14,12 +12,14 @@
       theme: {
         extend: {
           fontFamily: {
-            display: ['Syne', 'sans-serif'],
-            body: ['DM Sans', 'sans-serif'],
+            display: ['Futura', 'sans-serif'],
+            body: ['Futura', 'sans-serif'],
           },
           colors: {
-            accent: '#C8A96E',
-            'accent-light': '#E8C98E',
+            accent: '#F3B807',
+            primary: '#044084',
+            secondary: '#008437',
+            'accent-light': '#FFD54F',
             surface: {
               dark: '#080C10',
               'dark-2': '#0D1117',
@@ -49,18 +49,56 @@
     }
   </script>
   <style>
+    @font-face {
+      font-family: 'Futura';
+      src: url('fonts/FuturaStdBook.otf') format('opentype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Futura';
+      src: url('fonts/FuturaStdMedium.otf') format('opentype');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Futura';
+      src: url('fonts/FuturaStdBold.otf') format('opentype');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Futura';
+      src: url('fonts/FuturaStdExtraBold.otf') format('opentype');
+      font-weight: 800;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Futura';
+      src: url('fonts/FuturaStdHeavy.otf') format('opentype');
+      font-weight: 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --accent: #C8A96E;
-      --accent-light: #E8C98E;
+      --accent: #F3B807;
+      --accent-light: #FFD54F;
+      --primary: #044084;
+      --secondary: #008437;
       --bg: #080C10;
       --bg2: #0D1117;
       --bg3: #111820;
       --bg4: #161E28;
       --text: #F0EDE8;
       --text-muted: #8A9BB0;
-      --border: rgba(200,169,110,0.15);
+      --border: rgba(243,184,7,0.15);
       --glass: rgba(13,17,23,0.7);
     }
     [data-theme="light"] {
@@ -70,11 +108,11 @@
       --bg4: #DAD7D0;
       --text: #1A1612;
       --text-muted: #6B6460;
-      --border: rgba(200,169,110,0.25);
+      --border: rgba(243,184,7,0.25);
       --glass: rgba(248,246,242,0.8);
     }
 
-    html { scroll-behavior: smooth; font-family: 'DM Sans', sans-serif; }
+    html { scroll-behavior: smooth; font-family: 'Futura', sans-serif; }
     body { background: var(--bg); color: var(--text); overflow-x: hidden; cursor: none; }
 
     /* Custom cursor */
@@ -121,7 +159,7 @@
 
     /* Project card */
     .proj-card { transition: transform 0.4s cubic-bezier(.25,.8,.25,1), box-shadow 0.4s; }
-    .proj-card:hover { transform: translateY(-8px) scale(1.01); box-shadow: 0 24px 60px rgba(200,169,110,0.1); }
+    .proj-card:hover { transform: translateY(-8px) scale(1.01); box-shadow: 0 24px 60px rgba(243,184,7,0.1); }
     .proj-card:hover .proj-overlay { opacity: 1; }
     .proj-overlay { opacity: 0; transition: opacity 0.3s ease; }
 
@@ -131,9 +169,9 @@
 
     /* Button */
     .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent-light)); color: #0A0800; font-weight: 600; transition: transform 0.2s, box-shadow 0.2s, filter 0.2s; }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(200,169,110,0.35); filter: brightness(1.08); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(243,184,7,0.35); filter: brightness(1.08); }
     .btn-outline { border: 1px solid var(--border); color: var(--text); transition: border-color 0.2s, background 0.2s, transform 0.2s; }
-    .btn-outline:hover { border-color: var(--accent); background: rgba(200,169,110,0.08); transform: translateY(-2px); }
+    .btn-outline:hover { border-color: var(--accent); background: rgba(243,184,7,0.08); transform: translateY(-2px); }
 
     /* Mobile menu */
     #mobile-menu { transform: translateX(100%); transition: transform 0.4s cubic-bezier(.77,0,.18,1); }
@@ -144,7 +182,7 @@
     .hamburger.open span:nth-child(3) { transform: rotate(-45deg); top: 50%; }
 
     /* Glowing dot */
-    .glow-dot { box-shadow: 0 0 12px var(--accent), 0 0 30px rgba(200,169,110,0.3); }
+    .glow-dot { box-shadow: 0 0 12px var(--accent), 0 0 30px rgba(243,184,7,0.3); }
 
     /* Timeline */
     .timeline-line { background: linear-gradient(to bottom, var(--accent), transparent); }
@@ -158,7 +196,7 @@
     .orbit-dot-2 { animation: orbit 12s linear infinite reverse; }
 
     /* Background mesh */
-    .mesh-bg { background: radial-gradient(ellipse at 20% 20%, rgba(200,169,110,0.06) 0%, transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(200,169,110,0.04) 0%, transparent 50%); }
+    .mesh-bg { background: radial-gradient(ellipse at 20% 20%, rgba(243,184,7,0.06) 0%, transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(243,184,7,0.04) 0%, transparent 50%); }
 
     /* Section title line */
     .section-line { display: inline-flex; align-items: center; gap: 12px; }
@@ -178,7 +216,7 @@
 
     /* Skill badge */
     .skill-badge { border: 1px solid var(--border); transition: border-color 0.2s, background 0.2s; }
-    .skill-badge:hover { border-color: var(--accent); background: rgba(200,169,110,0.08); }
+    .skill-badge:hover { border-color: var(--accent); background: rgba(243,184,7,0.08); }
 
     /* Theme light adjustments */
     [data-theme="light"] .gradient-text { background: linear-gradient(135deg, #8B6914, var(--accent), #5A4210); -webkit-background-clip: text; background-clip: text; }
@@ -278,7 +316,7 @@
     <div class="absolute -top-32 -right-32 w-96 h-96 rounded-full opacity-5" style="background:radial-gradient(circle, var(--accent) 0%, transparent 70%)"></div>
     <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full opacity-5" style="background:radial-gradient(circle, var(--accent) 0%, transparent 70%)"></div>
     <!-- Grid lines -->
-    <div class="absolute inset-0" style="background-image: linear-gradient(rgba(200,169,110,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(200,169,110,0.03) 1px, transparent 1px); background-size: 80px 80px;"></div>
+    <div class="absolute inset-0" style="background-image: linear-gradient(rgba(243,184,7,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(243,184,7,0.03) 1px, transparent 1px); background-size: 80px 80px;"></div>
   </div>
 
   <div class="container mx-auto px-6 max-w-7xl">
@@ -335,7 +373,7 @@
         <div class="relative w-80 h-80">
           <!-- Outer rings -->
           <div class="absolute inset-0 rounded-full" style="border:1px solid var(--border); animation:spin 20s linear infinite"></div>
-          <div class="absolute inset-4 rounded-full" style="border:1px dashed rgba(200,169,110,0.1); animation:spin 15s linear infinite reverse"></div>
+          <div class="absolute inset-4 rounded-full" style="border:1px dashed rgba(243,184,7,0.1); animation:spin 15s linear infinite reverse"></div>
 
           <!-- Orbit dots -->
           <div class="absolute inset-0 flex items-center justify-center">
@@ -470,7 +508,7 @@
       <article class="proj-card glass rounded-2xl overflow-hidden group reveal">
         <a href="https://butus-tg.netlify.app/" target="_blank" class="block relative overflow-hidden aspect-video">
           <img src="assets/images/butus1.png" alt="Butus" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
-          <div class="proj-overlay absolute inset-0 flex items-center justify-center" style="background:rgba(200,169,110,0.15);backdrop-filter:blur(2px)">
+          <div class="proj-overlay absolute inset-0 flex items-center justify-center" style="background:rgba(243,184,7,0.15);backdrop-filter:blur(2px)">
             <span class="glass px-4 py-2 rounded-full text-sm font-display font-bold" style="color:var(--accent)">Voir le site ↗</span>
           </div>
         </a>
@@ -488,7 +526,7 @@
       <article class="proj-card glass rounded-2xl overflow-hidden group reveal reveal-delay-1">
         <a href="https://koulmed.com/" target="_blank" class="block relative overflow-hidden aspect-video">
           <img src="assets/images/koulmed2.png" alt="Koulmed" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
-          <div class="proj-overlay absolute inset-0 flex items-center justify-center" style="background:rgba(200,169,110,0.15);backdrop-filter:blur(2px)">
+          <div class="proj-overlay absolute inset-0 flex items-center justify-center" style="background:rgba(243,184,7,0.15);backdrop-filter:blur(2px)">
             <span class="glass px-4 py-2 rounded-full text-sm font-display font-bold" style="color:var(--accent)">Voir le site ↗</span>
           </div>
         </a>
@@ -505,7 +543,7 @@
       <article class="proj-card glass rounded-2xl overflow-hidden group reveal reveal-delay-2">
         <a href="https://togo-diaspora.netlify.app/" target="_blank" class="block relative overflow-hidden aspect-video">
           <img src="assets/images/togodiaspora.png" alt="Togo Diaspora" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
-          <div class="proj-overlay absolute inset-0 flex items-center justify-center" style="background:rgba(200,169,110,0.15);backdrop-filter:blur(2px)">
+          <div class="proj-overlay absolute inset-0 flex items-center justify-center" style="background:rgba(243,184,7,0.15);backdrop-filter:blur(2px)">
             <span class="glass px-4 py-2 rounded-full text-sm font-display font-bold" style="color:var(--accent)">Voir le site ↗</span>
           </div>
         </a>
@@ -522,7 +560,7 @@
       <article class="proj-card glass rounded-2xl overflow-hidden group reveal">
         <a href="https://aiae-frontend.netlify.app/" target="_blank" class="block relative overflow-hidden aspect-video">
           <img src="assets/images/aiae.png" alt="AIAE" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
-          <div class="proj-overlay absolute inset-0 flex items-center justify-center" style="background:rgba(200,169,110,0.15);backdrop-filter:blur(2px)">
+          <div class="proj-overlay absolute inset-0 flex items-center justify-center" style="background:rgba(243,184,7,0.15);backdrop-filter:blur(2px)">
             <span class="glass px-4 py-2 rounded-full text-sm font-display font-bold" style="color:var(--accent)">Voir le site ↗</span>
           </div>
         </a>
@@ -614,7 +652,7 @@
       <article class="proj-card glass rounded-2xl overflow-hidden group reveal sm:col-span-2 lg:col-span-1">
         <a href="https://www.figma.com/design/vIqKUazcLtAfZbbpGD787H/Logo-THS-V.-2" target="_blank" class="block relative overflow-hidden aspect-video">
           <img src="assets/images/ths.png" alt="Logo THS" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
-          <div class="proj-overlay absolute inset-0 flex items-center justify-center" style="background:rgba(200,169,110,0.15);backdrop-filter:blur(2px)">
+          <div class="proj-overlay absolute inset-0 flex items-center justify-center" style="background:rgba(243,184,7,0.15);backdrop-filter:blur(2px)">
             <span class="glass px-4 py-2 rounded-full text-sm font-display font-bold" style="color:var(--accent)">Voir le design ↗</span>
           </div>
         </a>
@@ -713,7 +751,7 @@
     <div class="grid md:grid-cols-3 gap-6">
 
       <div class="glass rounded-2xl p-8 group hover:border-amber-500/30 transition-all duration-300 reveal">
-        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background:rgba(200,169,110,0.1)">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background:rgba(243,184,7,0.1)">
           <svg class="w-6 h-6" style="color:var(--accent)" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
         </div>
         <h3 class="font-display font-bold text-xl mb-4" style="color:var(--text)" data-i18n="services.web.title">Développement Web</h3>
@@ -721,7 +759,7 @@
       </div>
 
       <div class="glass rounded-2xl p-8 group hover:border-amber-500/30 transition-all duration-300 reveal reveal-delay-1" style="margin-top:1.5rem">
-        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background:rgba(200,169,110,0.1)">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background:rgba(243,184,7,0.1)">
           <svg class="w-6 h-6" style="color:var(--accent)" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
         </div>
         <h3 class="font-display font-bold text-xl mb-4" style="color:var(--text)" data-i18n="services.mobile.title">Développement Mobile</h3>
@@ -729,7 +767,7 @@
       </div>
 
       <div class="glass rounded-2xl p-8 group hover:border-amber-500/30 transition-all duration-300 reveal reveal-delay-2">
-        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background:rgba(200,169,110,0.1)">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-6" style="background:rgba(243,184,7,0.1)">
           <svg class="w-6 h-6" style="color:var(--accent)" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
         </div>
         <h3 class="font-display font-bold text-xl mb-4" style="color:var(--text)" data-i18n="services.design.title">Design UI/UX</h3>
